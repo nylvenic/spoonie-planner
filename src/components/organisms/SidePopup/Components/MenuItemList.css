@@ -1,3 +1,11 @@
 .menu-item-list {
     padding: var(--base-spacing);
 }
+
+.active button {
+    background: var(--primary-color) !important;
+}
+
+.active .left p {
+    color: var(--light) !important; 
+}

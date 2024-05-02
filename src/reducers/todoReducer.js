@@ -29,6 +29,19 @@ export default function(state, action) {
                 todos: [...todoManager.todos.memory],
                 completed: [...todoManager.completed.memory]
             }
+        case 'UNCOMPLETE_TODO':
+            try {
+                const {id} = action.payload;
+                todoManager.uncompleteTodo(id);
+            } catch(err) {
+                console.log(`Invalid operation spotted. Returning state...`, err);
+            }
+
+            return {
+                ...state,
+                todos: [...todoManager.todos.memory],
+                completed: [...todoManager.completed.memory]
+            }
         default:
             throw new Error(`Unrecognized type: ${action.type}`); 
     }

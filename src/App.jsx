@@ -1,5 +1,7 @@
-import Home from "./pages/Home.jsx";
+import Deleted from "./pages/Home.jsx";
+import Completed from "./pages/Completed.jsx";
 import Settings from './pages/Settings.jsx';
+import Home from "./pages/Home.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -11,6 +13,18 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <Home></Home>
+    ),
+  },
+  {
+    path: "/completed",
+    element: (
+      <Completed></Completed>
+    ),
+  },
+  {
+    path: "/deleted",
+    element: (
+      <Deleted></Deleted>
     ),
   },
   {

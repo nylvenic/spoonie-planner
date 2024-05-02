@@ -3,8 +3,21 @@
     width: var(--icon-width);
 }
 
+.icon-button-square {
+    border-radius: 5px !important;
+    padding: 0 !important;
+}
+
+.icon-button-xs {
+    width: calc(var(--icon-width)/2) !important;
+    height: calc(var(--icon-height)/2) !important;
+}
+
+.icon-button-xs svg, .icon-button-xs path {
+    width: calc(var(--icon-width)/4) !important;
+}
+
 .icon-button svg, .icon-button path {
-    height: 27px;
     fill: var(--light) !important;
 }
 

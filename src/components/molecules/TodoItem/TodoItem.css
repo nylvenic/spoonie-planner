@@ -51,6 +51,8 @@
 
 .mark-complete {
     grid-area: checkbox;
+    align-self: center;
+    justify-self: center;
     padding: 0 !important;
 }
 
