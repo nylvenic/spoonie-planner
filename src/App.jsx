@@ -1,4 +1,4 @@
-import Deleted from "./pages/Home.jsx";
+import Deleted from "./pages/Deleted.jsx";
 import Completed from "./pages/Completed.jsx";
 import Settings from './pages/Settings.jsx';
 import Home from "./pages/Home.jsx";
