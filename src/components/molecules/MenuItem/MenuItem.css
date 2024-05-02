@@ -1,0 +1,23 @@
+.menu-item {
+    display: flex;
+    gap: var(--xs-spacing);
+    width: 100%;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-transform: none !important;
+}
+
+.menu-item .left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--small-spacing);
+}
+
+.menu-item .right {
+    align-self: flex-end;
+}
+
+.menu-item .right path {
+    color: var(--primary-color);
+}

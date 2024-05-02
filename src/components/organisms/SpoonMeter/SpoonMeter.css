@@ -1,0 +1,41 @@
+.point {
+    flex: 1;
+    height: 100%;
+    background: var(--primary-color);
+    display:block;
+}
+
+.used {
+    background: var(--text-light);
+}
+
+.point-start {
+    border-radius: 9999px 0 0 9999px;
+}
+
+.point-end {
+    border-radius: 0 9999px 9999px 0;
+}
+
+.point-wrapper {
+    display: inline-flex;
+    gap: 1px;
+    height: 100%;
+    width: 100%;
+}
+
+.meter {
+    justify-self: center;
+    align-self: center;
+    height: 48px;
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.1);
+    width: var(--base-width);
+    padding: var(--meter-spacing);
+    gap: var(--small-spacing);
+    border-radius: 9999px;
+    background: var(--light);
+    display: inline-flex;
+    align-items: center;
+}

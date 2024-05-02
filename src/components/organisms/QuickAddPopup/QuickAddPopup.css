@@ -1,0 +1,49 @@
+.quick-add-popup {
+    position: fixed;
+    width: 100%;
+    border: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--base-spacing);
+    background: var(--light);
+    z-index: var(--default-index);
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.4);
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.4);
+    animation-name: quickAddAppear;
+    animation-duration: 0.5s;
+    display: none;
+}
+
+.quick-add-popup .togglers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.quick-add-popup form > * {
+    margin-bottom: var(--base-spacing) !important;
+}
+
+.quick-add-popup .controls {
+    margin-bottom: 0 !important;
+}
+
+.controls {
+    display: flex;
+    justify-content: end;
+}
+
+.controls .create-btn {
+    background: var(--primary-color) !important;
+}
+
+@keyframes quickAddAppear {
+    0% {
+        transform:translateY(45%);
+    }
+    
+    100% {
+        transform:translateY(0);
+    }
+}

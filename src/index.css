@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'Roboto';
+  src: url('./Roboto-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  position: relative;
+  background: var(--bg-color);
+  min-height: 100vh;
+}
+
+#root {
+  padding-top: var(--nav-height);
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto';
+  color: var(--black-secondary);
+}
+
+:root {
+  --bg-color: #F4F4F4;
+  --light: #FFFFFF;
+  --primary-color: #4D92BF;
+  --menus: #185E8C;
+  --url: #36A4EB;
+  --black-secondary: #31363F;
+  --text-light: #898989;
+  --nav-height: 66px;
+  --footer-height: 50px;
+  --xs-spacing: 0.40rem;
+  --small-spacing: 0.75rem;
+  --base-spacing: 1rem;
+  --lg-spacing: 1.25rem;
+  --base-width: 90%;
+  --icon-height: 42px;
+  --icon-width: 42px;
+  --default-index: 1200;
+  --meter-spacing: calc(var(--base-spacing)/2) var(--base-spacing);
+  --base-padding: var(--base-spacing) calc(var(--base-spacing) * 2);
+}

@@ -1,0 +1,66 @@
+.todo-item {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 15% 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "checkbox txt txt"
+    ". meta meta";
+    align-items: center;
+    padding-bottom: var(--small-spacing);
+    border-bottom: 2px solid var(--bg-color);
+    margin-top: var(--small-spacing);
+}
+
+.todo-item:last-child {
+    padding-bottom: 0;
+}
+
+.todo-item:last-child {
+    border-bottom: none;
+}
+
+.replenish-indicator {
+    color: var(--url);
+    font-size: var(--lg-spacing);
+}
+
+.todo-item input {
+    height: 16px;
+    justify-self:center;
+    align-self: center;
+}
+
+.divider {
+    font-size: var(--lg-spacing);
+    opacity: 0.25;
+}
+
+.todo-item .todo-meta .date {
+    color: var(--primary-color);
+}
+
+.spoons-cost {
+    display: flex;
+    align-items: center;
+    gap: var(--xs-spacing);
+}
+
+.spoons-cost svg {
+    height: 24px;
+}
+
+.mark-complete {
+    grid-area: checkbox;
+    padding: 0 !important;
+}
+
+.todo-text {
+    grid-area: txt;
+}
+
+.todo-meta {
+    display: flex;
+    grid-area: meta;
+    align-items: center;
+    gap: var(--xs-spacing);
+}

@@ -1,0 +1,16 @@
+.page {
+    width: var(--base-width);
+    background: var(--light);
+    padding: var(--base-spacing);
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.1);
+}
+
+.page .heading {
+    margin-bottom: var(--base-spacing);
+}
+
+.page h2 {
+    font-size: 1.2rem;
+}

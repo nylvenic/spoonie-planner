@@ -1,0 +1,11 @@
+.menu.menu-footer {
+    justify-content: space-around;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.menu.menu-footer .MuiButtonBase-root {
+    padding: 0 !important;
+}

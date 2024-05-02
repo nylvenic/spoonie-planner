@@ -1,0 +1,12 @@
+.quick-add {
+    position: fixed !important;
+    height: 54px !important;
+    width: 54px !important;
+    right: 1rem;
+    bottom: var(--lg-spacing);
+    background: var(--primary-color) !important;
+}
+
+.quick-add path {
+    color: var(--light) !important;
+}

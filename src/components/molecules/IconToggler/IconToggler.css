@@ -1,0 +1,17 @@
+.icon-button {
+    height: var(--icon-height);
+    width: var(--icon-width);
+}
+
+.icon-button svg, .icon-button path {
+    height: 27px;
+    fill: var(--light) !important;
+}
+
+.icon-button-on {
+    background: var(--primary-color) !important;
+}
+
+.icon-button-off {
+    background: var(--text-light) !important;
+}

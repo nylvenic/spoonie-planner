@@ -1,0 +1,83 @@
+.side-popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 15%;
+    background: var(--light);
+    z-index: var(--default-index);
+    animation-name: appear;
+    animation-duration: 0.75s;
+}
+
+.profile-pic {
+    height: 64px;
+    width: 64px;
+    border-radius: 9999px;
+    grid-area: profile;
+}
+
+.side-popup .header {
+    padding: var(--small-spacing);
+    background: var(--menus);
+    display: grid;
+    grid-template-columns: 64px 1fr 1fr;
+    gap: var(--small-spacing);
+    grid-template-rows: 64px;
+    align-items: center;
+    grid-template-areas: "profile username button";
+}
+
+.side-popup .header p {
+    grid-area: username;
+}
+
+.side-popup .header .controls {
+    grid-area: button;
+}
+
+.side-popup .header p,
+.side-popup .header path {
+    color: var(--light);
+    fill: var(--light);
+}
+
+.side-popup .header svg {
+    height: 1.2rem;
+    width: 1.2rem;
+}
+
+@keyframes appear {
+    0% {
+        transform:translateX(-45%);
+    }
+
+    100% {
+        transform:translateX(0);
+    }
+}
+
+.faux-close {
+    position: fixed;
+    right: 0;
+    top: calc(var(--nav-height) / 2);
+    transform:translateY(-50%);
+    z-index: 9999;
+    padding-right: var(--base-spacing);
+    animation-name: fauxCloseAnim;
+    animation-duration: 0.75s;
+}
+
+.faux-close path {
+    color: var(--light);
+}
+
+@keyframes fauxCloseAnim {
+    0% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
+}
