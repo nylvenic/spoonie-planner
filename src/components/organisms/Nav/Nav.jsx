@@ -25,11 +25,14 @@ export default function Nav({inner=false, text}) {
         </IconButton>
     }
     return (
-        <Menu Wrapper="nav" className="navigation" hoisted={true}>
-            <div className="header">
-                {icon}
-                <p>{text}</p>
-            </div>
-        </Menu>
+        <>
+            <Menu Wrapper="nav" className="navigation" hoisted={true}>
+                <div className="header">
+                    {icon}
+                    <p>{text}</p>
+                </div>
+            </Menu>
+            <div className="nav-height-object"></div>
+        </>
     );
 }

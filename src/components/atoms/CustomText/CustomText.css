@@ -1,0 +1,24 @@
+.custom-text.xs {
+    font-size: var(--xs-spacing);
+}
+.custom-text.sm {
+    font-size: var(--small-spacing);
+}
+.custom-text.base {
+    font-size: var(--base-spacing);
+}
+.custom-text.lg {
+    font-size: var(--lg-spacing);
+}
+.custom-text.xl {
+    font-size: var(--xl-spacing);
+}
+.custom-text.dark {
+    color: var(--black-secondary)
+}
+.custom-text.grey {
+    color: var(--text-light)
+}
+.custom-text.light {
+    color: var(--dark)
+}

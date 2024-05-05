@@ -1,7 +1,10 @@
 import Deleted from "./pages/Deleted.jsx";
 import Completed from "./pages/Completed.jsx";
 import Settings from './pages/Settings.jsx';
-import Home from "./pages/Home.jsx";
+import Today from "./pages/Today.jsx";
+import Login from "./pages/Login.jsx";
+import Index from "./pages/Index.jsx";
+import SignUp from "./pages/SignUp.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -12,7 +15,25 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Home></Home>
+      <Index></Index>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <Login></Login>
+    ),
+  },
+  {
+    path: "/sign-up",
+    element: (
+      <SignUp></SignUp>
+    ),
+  },
+  {
+    path: "/today",
+    element: (
+      <Today></Today>
     ),
   },
   {

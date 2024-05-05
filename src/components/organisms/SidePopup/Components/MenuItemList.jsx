@@ -6,7 +6,7 @@ import './MenuItemList.css';
 export default function MenuItemList() {
     const {closeModals} = useUIContext();
     return <div className="menu-item-list">
-        <NavLink onClick={closeModals} to="/" className={({isActive}) => isActive ? 'active' : null}>
+        <NavLink onClick={closeModals} to="/today" className={({isActive}) => isActive ? 'active' : null}>
             <MenuItem icon={faCalendarWeek}>Today</MenuItem>
         </NavLink>
         <NavLink onClick={closeModals} to="/inbox" className={({isActive}) => isActive ? 'active' : null}>

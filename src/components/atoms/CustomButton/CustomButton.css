@@ -1,0 +1,17 @@
+.MuiButton-contained.custom-button {
+    background: var(--primary-color) !important;
+}
+
+
+.MuiButton-outlined.custom-button {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.custom-button {
+    border-radius: 9999px !important;
+}
+
+.custom-button.full-width {
+    width: 100%;
+}

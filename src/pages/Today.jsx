@@ -1,4 +1,4 @@
-import { SpoonContextProvider } from "../contexts/SpoonContext";
+import { SpoonContextProvider } from "../contexts/SpoonContext.jsx";
 import { TodoProvider } from "../contexts/TodoContext.jsx";
 import SpoonMeter from '../components/organisms/SpoonMeter/SpoonMeter.jsx';
 import QuickAdd from '../components/molecules/QuickAdd/QuickAdd.jsx';

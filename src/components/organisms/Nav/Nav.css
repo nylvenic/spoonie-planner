@@ -24,6 +24,10 @@
     animation-duration: 0.5s;
 }
 
+.nav-height-object {
+    height: var(--nav-height);
+}
+
 @keyframes closeBtnAnim {
     0% {
         transform: rotate(-45deg);
