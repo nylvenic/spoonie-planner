@@ -10,9 +10,17 @@ import { faSpoon,
     faShare } from "@fortawesome/free-solid-svg-icons";
 import Page from "../../molecules/Page/Page";
 import MenuItem from "../../molecules/MenuItem/MenuItem";
-
+import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 export default function SettingsPanel({type, className='', ...props}) {
+    const auth = useAuth();
+    const navigate = useNavigate();
     let settings = null;
+
+    function logOutHandler() {
+        auth.logout();
+        navigate('/');
+    }
 
     if(type == 'account') {
         settings = <Page title="Account">
@@ -31,7 +39,7 @@ export default function SettingsPanel({type, className='', ...props}) {
         settings = <Page title="Others">
             <MenuItem icon={faShare} decoration={true}>Share</MenuItem>
             <MenuItem icon={faCircleInfo} decoration={true}>About</MenuItem>
-            <MenuItem icon={faRightFromBracket} decoration={true}>Sign Out</MenuItem>
+            <MenuItem icon={faRightFromBracket} onClick={logOutHandler} decoration={true}>Sign Out</MenuItem>
         </Page>
     }
     return settings ? <div className={`settings-panel ${className}`} {...props}>{settings}</div> : null;

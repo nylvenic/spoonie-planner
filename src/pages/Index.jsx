@@ -4,7 +4,18 @@ import GapWrapper from '../components/atoms/GapWrapper/GapWrapper';
 import BackgroundWrapper from '../components/atoms/BackgroundWrapper/BackgroundWrapper';
 import { Link } from 'react-router-dom';
 import CustomText from '../components/atoms/CustomText/CustomText';
+import { useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 export default function Index() {
+    const auth = useAuth();
+    const navigate = useNavigate();
+    // If user is logged in, redirect to '/today'
+    useEffect(() => {
+        if(auth.isLoggedIn) {
+            navigate('/today');
+        }
+    }, auth.isLoggedIn)
     return <BackgroundWrapper>
         <FormContainer>
             <GapWrapper sizeClass='sm'>
