@@ -8,18 +8,32 @@ import Integrations from '../components/molecules/Integrations/Integrations';
 import CustomText from '../components/atoms/CustomText/CustomText';
 import { useState } from 'react';
 import CONSTANTS from '../models/utils/CONSTANTS';
+import MessageBox from '../components/molecules/MessageBox/MessageBox';
 export default function SignUp() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [email, setEmail] = useState('');
     const [passwordMatch, setPasswordMatch] = useState(true); 
+    const [usernameError, setUsernameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [signUpMsg, setSignUpMsg] = useState(null);
 
     async function onSubmitHandler(e) {
         e.preventDefault();
-        if(password == repeatPassword) {
+        if(!username) {
+            setUsernameError(true);
+        }
+        if(!password) {
+            setPasswordError(true);
+        }
+        if(!email) {
+            setEmailError(true);
+        }
+        if(password == repeatPassword && repeatPassword) {
             console.log('pass');
-            await fetch(`${CONSTANTS.backend_url}/users/create`, {
+            const response = await fetch(`${CONSTANTS.backend_url}/users/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,6 +44,18 @@ export default function SignUp() {
                     email
                 })
             });
+            const {msg, error} = await response.json();
+            if(msg) {
+                setSignUpMsg({
+                    text: msg,
+                    error: false,
+                })
+            } else if(error) {
+                setSignUpMsg({
+                    text: error,
+                    error: true
+                })
+            }
         } else {
             setPasswordMatch(false);
         }
@@ -40,22 +66,34 @@ export default function SignUp() {
             <GapWrapper sizeClass='sm'>
                 <h1>Sign Up</h1>
             </GapWrapper>
+            {signUpMsg && <MessageBox
+            error={signUpMsg.error}
+            cb={() => setSignUpMsg(null)}
+            persistent={true}
+            text={signUpMsg.text}
+            ></MessageBox>}
             <form onSubmit={onSubmitHandler}>
                 <GapWrapper sizeClass='sm'>
                     <TextField
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
                     label="Username"
+                    error={usernameError}
+                    helperText="Please enter a username."
                     type="text"></TextField>
                     <TextField
                     onChange={e => setEmail(e.target.value)}
                     value={email}
                     label="Email"
+                    error={emailError}
+                    helperText="Please enter an email."
                     type="email"></TextField>
                     <TextField
                     onChange={e => setPassword(e.target.value)}
                     value={password}
                     label="Password"
+                    error={passwordError}
+                    helperText="Please enter a password."
                     type="password"></TextField>
                     <TextField
                     onChange={e => setRepeatPassword(e.target.value)}
@@ -63,7 +101,7 @@ export default function SignUp() {
                     label="Repeat
                     Password"
                     error={passwordMatch ? false : true}
-                    helperText="Ensure both passwords match"
+                    helperText="Ensure both passwords match."
                     type="password"></TextField>
                     <CustomButton type="submit" variant="contained">Sign Up</CustomButton>
                 </GapWrapper>

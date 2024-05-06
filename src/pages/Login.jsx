@@ -11,14 +11,26 @@ import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
+import MessageBox from '../components/molecules/MessageBox/MessageBox.jsx';
 export default function Login() {
     const navigate = useNavigate();
     const auth = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [loginMsg, setLoginMsg] = useState('');
 
     async function onSubmitHandler(e) {
         e.preventDefault();
+        if(!username) {
+            setUsernameError(true);
+            return;
+        };
+        if(!password) {
+            setPasswordError(true)
+            return;
+        };
         const response = await fetch(`${CONSTANTS.backend_url}/users/login`, {
             method: 'POST',
             headers: {
@@ -29,9 +41,15 @@ export default function Login() {
                 password,
             })
         });
-        const {token, msg} = await response.json();
-        auth.login(token);
-        navigate('/');
+        const {token, msg, error} = await response.json();
+        if(!token || error) {
+            setLoginMsg(msg || error);
+        }
+        
+        if(token) {
+            auth.login(token);
+            navigate('/today');
+        }
     }
 
     return <BackgroundWrapper>
@@ -39,17 +57,22 @@ export default function Login() {
             <GapWrapper sizeClass='sm'>
                 <h1>Login</h1>
             </GapWrapper>
+            {loginMsg && <MessageBox error={true} cb={() => setLoginError('')} text={loginMsg}></MessageBox>}
             <form onSubmit={onSubmitHandler}>
                 <GapWrapper sizeClass='sm'>
                     <TextField
                     label="Username"
                     value={username}
+                    error={usernameError}
                     onChange={(e) => setUsername(e.target.value)}
+                    helperText="Username must not be empty."
                     type="text"></TextField>
                     <TextField
                     label="Password"
+                    error={passwordError}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    helperText="Password must not be empty."
                     type="password"></TextField>
                     <CustomButton type="submit" variant="contained">Login</CustomButton>
                 </GapWrapper>

@@ -15,7 +15,7 @@ export default function Index() {
         if(auth.isLoggedIn) {
             navigate('/today');
         }
-    }, auth.isLoggedIn)
+    }, [auth.isLoggedIn])
     return <BackgroundWrapper>
         <FormContainer>
             <GapWrapper sizeClass='sm'>

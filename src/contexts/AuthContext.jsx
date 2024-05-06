@@ -22,10 +22,12 @@ export function AuthProvider({children}) {
     }, [])
 
     function login(token) {
-        Cookies.set('jwt', token, {expires: 3});
-        const decodedToken = jwtDecode(token);
-        setUserData(decodedToken);
-        setIsLoggedIn(true);
+        if(token) {
+            Cookies.set('jwt', token, {expires: 3});
+            const decodedToken = jwtDecode(token);
+            setUserData(decodedToken);
+            setIsLoggedIn(true);
+        }
     }
 
     function logout() {

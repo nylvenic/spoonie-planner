@@ -1,0 +1,13 @@
+.message-box {
+    background: var(--primary-color);
+    border-radius: 10px;
+    padding: var(--small-spacing);
+}
+
+.message-box path {
+    color: var(--light);
+}
+
+.message-box.error {
+    background: var(--error-color);
+}
