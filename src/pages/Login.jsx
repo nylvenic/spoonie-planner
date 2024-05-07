@@ -57,11 +57,12 @@ export default function Login() {
             <GapWrapper sizeClass='sm'>
                 <h1>Login</h1>
             </GapWrapper>
-            {loginMsg && <MessageBox error={true} cb={() => setLoginError('')} text={loginMsg}></MessageBox>}
+            {loginMsg && <MessageBox error={true} cb={() => setLoginMsg('')} text={loginMsg}></MessageBox>}
             <form onSubmit={onSubmitHandler}>
                 <GapWrapper sizeClass='sm'>
                     <TextField
                     label="Username"
+                    autoComplete='username'
                     value={username}
                     error={usernameError}
                     onChange={(e) => setUsername(e.target.value)}
@@ -69,6 +70,7 @@ export default function Login() {
                     type="text"></TextField>
                     <TextField
                     label="Password"
+                    autoComplete='current-password'
                     error={passwordError}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

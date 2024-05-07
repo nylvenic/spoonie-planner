@@ -10,18 +10,12 @@ import { useSpoonContext } from "../../../contexts/SpoonContext";
 import IconToggler from "../IconToggler/IconToggler";
 import { faXmark, faCheck } from "@fortawesome/free-solid-svg-icons";
 export default function TodoItem({todo, type}) {
-    const {modifySpoons} = useSpoonContext();
-    const {state, dispatch} = useTodos();
+    const {alterCompleteStatus} = useTodos();
     let btn;
 
     if(type == 'todo') {
-        btn = <Checkbox value={false} onClick={(e) => {
-            modifySpoons(todo.cost, todo.replenish);
-            dispatch({
-                type: 'COMPLETE_TODO', payload: {
-                    id: todo.id,
-                }
-            });
+        btn = <Checkbox value={false} onClick={async (e) => {
+                await alterCompleteStatus({id:todo.id, newStatus:true});
             }
         } className="mark-complete"></Checkbox>
     } else if (type == 'delete') {
@@ -33,13 +27,8 @@ export default function TodoItem({todo, type}) {
         </IconToggler>
     } else if (type == 'complete') {
         btn = <IconToggler
-        onClick={e => {
-            modifySpoons((-1*todo.cost), todo.replenish);
-            dispatch({
-                type: 'UNCOMPLETE_TODO', payload: {
-                    id: todo.id,
-                }
-            });
+        onClick={async e => {
+            await alterCompleteStatus({id:todo.id, newStatus:false});
         }}
         small={true}
         square={true}

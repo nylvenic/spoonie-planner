@@ -7,13 +7,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState, useRef, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { useTodos } from '../../../contexts/TodoContext';
-import idGenerator from '../../../models/utils/idGenerator';
 import { useUIContext } from '../../../contexts/UIContext';
 import Overlay from '../../atoms/Overlay/Overlay';
 export default function QuickAddPopup() {
     const {quickAddPopup, setQuickAddPopup} = useUIContext();
     const dialog = useRef(0);
-    const {state, dispatch} = useTodos();
+    const {quickCreate} = useTodos();
     const [todoName, setTodoName] = useState('');
     const [date, setDate] = useState(new Date());
     const [cost, setCost] = useState(1);
@@ -28,18 +27,15 @@ export default function QuickAddPopup() {
     return (<>
       <Overlay onClick={() => setQuickAddPopup(false)}></Overlay>
         <dialog ref={dialog} open className="quick-add-popup">
-          <form onSubmit={(e) => {
+          <form onSubmit={async (e) => {
               e.preventDefault();
-              dispatch({
-                type: 'CREATE_TODO', 
-                payload: {
+              await quickCreate({
                   text: todoName,
                   cost: cost,
                   replenish: replenish,
                   repeat: repeat,
                   date: date,
-                  id: idGenerator()
-                }});
+              });
               setQuickAddPopup(false);
             }}>
             <TextField required={true} label="What are you doing today?" style={{width: '100%'}} onChange={(e) => setTodoName(e.target.value)}></TextField>

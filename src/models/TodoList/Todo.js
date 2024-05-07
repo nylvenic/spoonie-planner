@@ -1,5 +1,5 @@
 export default class Todo {
-    constructor({text, description='', date=new Date(), cost=1, repeat=false, completed=false, replenish=false, id}) {
+    constructor({text, description='', date=new Date(), cost=1, repeat=false, completed=false, replenish=false}) {
         const errors = this.validate({text, date, cost, repeat, completed, replenish});
         if (errors.length > 0) {
             errors.forEach(error => console.error(error.message));
@@ -12,8 +12,6 @@ export default class Todo {
         this.completed = completed;
         this.repeat = repeat;
         this.replenish = replenish;
-        if(!id) throw new Error('No id found!');
-        this.id = id;
     }
 
     validate({text, date, cost, repeat, completed, replenish}) {

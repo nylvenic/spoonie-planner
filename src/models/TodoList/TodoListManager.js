@@ -1,5 +1,6 @@
 import TodoList from "./TodoList";
-
+import CONSTANTS from "../utils/CONSTANTS";
+import Cookies from "js-cookie";
 class TodoListManager {
     constructor() {
         this.todos = new TodoList();
@@ -7,11 +8,18 @@ class TodoListManager {
         this.completed = new TodoList();
     }
 
-    completeTodo(id) {
-        const {removed} = this.todos.remove(id);
-        removed.completed = true;
-        this.completed.add(removed);
-        return removed;
+    async completeTodo({id, newStatus}) {
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/complete`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${Cookies.get('jwt')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                newStatus
+            })
+        });
+        return response;
     }
 
     uncompleteTodo(id) {
@@ -27,8 +35,32 @@ class TodoListManager {
         return removed;
     }
 
-    createTodo(todo) {
-        this.todos.add(todo);
+    async getAll(status) {
+        let statusString='';
+        if(status == 'deleted') {
+            statusString = '?status=deleted';
+        } else if(status == 'completed') {
+            statusString = '?status=completed';
+        }
+        const response = await fetch(`${CONSTANTS.backend_url}/todos${statusString}`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('jwt')}`
+            }
+        });
+        const {todos} = await response.json(); 
+        return todos;
+    }
+
+    async createTodo(todo) {
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/quick-create`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${Cookies.get('jwt')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(todo)
+        });
+        return response;
     }
 }
 

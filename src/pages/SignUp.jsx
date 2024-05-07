@@ -78,6 +78,7 @@ export default function SignUp() {
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
                     label="Username"
+                    autoComplete='username'
                     error={usernameError}
                     helperText="Please enter a username."
                     type="text"></TextField>
@@ -92,6 +93,7 @@ export default function SignUp() {
                     onChange={e => setPassword(e.target.value)}
                     value={password}
                     label="Password"
+                    autoComplete='new-password'
                     error={passwordError}
                     helperText="Please enter a password."
                     type="password"></TextField>
@@ -101,6 +103,7 @@ export default function SignUp() {
                     label="Repeat
                     Password"
                     error={passwordMatch ? false : true}
+                    autoComplete='new-password'
                     helperText="Ensure both passwords match."
                     type="password"></TextField>
                     <CustomButton type="submit" variant="contained">Sign Up</CustomButton>
