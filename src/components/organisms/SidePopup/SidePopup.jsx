@@ -7,7 +7,10 @@ import MenuItemList from './Components/MenuItemList';
 import { useUIContext } from '../../../contexts/UIContext';
 import Overlay from '../../atoms/Overlay/Overlay.jsx';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext.jsx';
+
 export default function SidePopup() {
+    const auth = useAuth();
     const {menuPopup, setMenuPopup, closeModals} = useUIContext();
     return menuPopup ? 
     <>
@@ -16,7 +19,7 @@ export default function SidePopup() {
         <div className="side-popup">
             <div className="header">
                 <img className="profile-pic" src={profilePicture}></img>
-                <p>Username</p>
+                <p>{auth.userData.username}</p>
                 <div className="controls">
                     <Link onClick={closeModals} to="/settings"><IconButton><FontAwesomeIcon icon={faGear}></FontAwesomeIcon></IconButton></Link>
                 </div>

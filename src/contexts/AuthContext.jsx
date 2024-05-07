@@ -23,10 +23,14 @@ export function AuthProvider({children}) {
 
     function login(token) {
         if(token) {
-            Cookies.set('jwt', token, {expires: 3});
+            Cookies.set('jwt', token, { expires: 3, secure: true, sameSite: 'Strict' });
             const decodedToken = jwtDecode(token);
-            setUserData(decodedToken);
-            setIsLoggedIn(true);
+            if (decodedToken.exp * 1000 > Date.now()) {
+                setUserData(decodedToken);
+                setIsLoggedIn(true);
+            } else {
+                logout(); // Clears the expired token
+            }
         }
     }
 

@@ -1,13 +1,18 @@
 import SpoonMeterController from "../models/User/SpoonMeterController";
 import React from "react";
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
+import { useAuth } from "./AuthContext";
+import CONSTANTS from "../models/utils/CONSTANTS";
+import Cookies from "js-cookie";
 
 const SpoonContext = createContext();
 const spoonManager = new SpoonMeterController();
 
 export const SpoonContextProvider = ({ children }) => {
-    const [spoons, setSpoons] = useState(spoonManager.spoons);
-
+    const {userData} = useAuth();
+    const [spoons, setSpoons] = useState(0);
+    const [maxSpoons, setMaxSpoons] = useState(0);
+    
     const modifySpoons = (cost, isReplenish) => {
         if(isReplenish) {
             spoonManager.increase(cost);
@@ -19,10 +24,28 @@ export const SpoonContextProvider = ({ children }) => {
         setSpoons(() => spoonManager.spoons);
     };
 
+    async function getSpoons() {
+        if(userData) {
+            const data = await fetch(`${CONSTANTS.backend_url}/users/${userData.userId}/spoons`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('jwt')}`
+                }
+            });
+            const json = (await data.json()).result;
+            setSpoons(json.spoons);
+            setMaxSpoons(json.maxSpoons);
+        }
+    }
+
+    useEffect(() => {
+        getSpoons();
+    }, [userData])
+
     const value = {
         modifySpoons,
+        getSpoons,
         spoons,
-        maxSpoons: spoonManager.maxSpoons,
+        maxSpoons: userData ? userData.maxSpoons : 12,
     };
 
     return <SpoonContext.Provider value={value}>
