@@ -8,7 +8,7 @@ class TodoListManager {
         this.completed = new TodoList();
     }
 
-    async completeTodo({id, newStatus}) {
+    async alterCompleteStatus({id, newStatus}) {
         const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/complete`, {
             method: 'PUT',
             headers: {
@@ -18,6 +18,15 @@ class TodoListManager {
             body: JSON.stringify({
                 newStatus
             })
+        });
+        return response;
+    }
+
+    async getById(id) {
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('jwt')}`
+            }
         });
         return response;
     }
@@ -52,13 +61,26 @@ class TodoListManager {
     }
 
     async createTodo(todo) {
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/quick-create`, {
+        console.log(JSON.stringify(todo));
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/create`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${Cookies.get('jwt')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(todo)
+        });
+        return response;
+    }
+
+    async updateTodo({data, id}) {
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${Cookies.get('jwt')}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
         });
         return response;
     }

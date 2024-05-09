@@ -16,28 +16,6 @@
     display: none;
 }
 
-.quick-add-popup .togglers {
-    display: flex;
-    justify-content: space-between;
-}
-
-.quick-add-popup form > * {
-    margin-bottom: var(--base-spacing) !important;
-}
-
-.quick-add-popup .controls {
-    margin-bottom: 0 !important;
-}
-
-.controls {
-    display: flex;
-    justify-content: end;
-}
-
-.controls .create-btn {
-    background: var(--primary-color) !important;
-}
-
 @keyframes quickAddAppear {
     0% {
         transform:translateY(45%);

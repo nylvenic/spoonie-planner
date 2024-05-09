@@ -1,0 +1,66 @@
+.todo-fields {
+    background: var(--light);
+    display: flex;
+    flex-direction: column;
+    gap: var(--base-spacing);
+    padding: var(--base-spacing);
+}
+
+.todo-fields.fill-screen {
+    height: calc(100vh - var(--nav-height));
+}
+
+.todo-fields textarea {
+    font-size: var(--base-spacing);
+    height: 100%;
+    width: 100%;
+    padding: var(--base-spacing);
+    border-radius: 5px;
+    border: 1px solid var(--text-light);
+    background: none;
+    resize: none;
+}
+
+.todo-fields .togglers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo-fields textarea:hover {
+    border: 1px solid var(--black-secondary)
+}
+
+.todo-fields textarea:focus {
+    outline: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+}
+
+.todo-fields .controls {
+    margin-bottom: 0 !important;
+}
+
+.todo-fields .controls {
+    display: flex;
+    justify-content: end;
+}
+
+.todo-fields .controls .create-btn {
+    background: var(--primary-color) !important;
+}
+
+@media screen and (min-width: 480px) {
+    .todo-fields .togglers {
+        justify-content: normal;
+        gap: var(--base-spacing);
+    }
+  }
+
+@media screen and (max-height: 480px) {
+    .todo-fields {
+        height: auto;
+    }
+    .todo-fields textarea {
+        height: 100px;
+    }
+  }

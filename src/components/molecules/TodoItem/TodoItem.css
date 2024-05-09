@@ -6,13 +6,12 @@
     grid-template-areas: "checkbox txt txt"
     ". meta meta";
     align-items: center;
-    padding-bottom: var(--small-spacing);
+    padding: var(--small-spacing) 0; 
     border-bottom: 2px solid var(--bg-color);
-    margin-top: var(--small-spacing);
 }
 
-.todo-item:last-child {
-    padding-bottom: 0;
+.todo-item:hover {
+    background:var(--bg-color);
 }
 
 .todo-item:last-child {

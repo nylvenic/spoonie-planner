@@ -12,10 +12,8 @@ export default function Home() {
     <SpoonContextProvider>
       <SpoonMeter></SpoonMeter>
       <QuickAdd></QuickAdd>
-      <TodoProvider>
-        <TaskList></TaskList>
-        <QuickAddPopup></QuickAddPopup>
-      </TodoProvider>
+      <TaskList></TaskList>
+      <QuickAddPopup></QuickAddPopup>
     </SpoonContextProvider>
     <SidePopup></SidePopup>
   </>;

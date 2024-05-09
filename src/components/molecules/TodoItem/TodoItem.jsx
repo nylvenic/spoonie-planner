@@ -1,5 +1,4 @@
 import Spoon from "../../atoms/Icon/Spoon";
-import { Button } from "@mui/material";
 import './TodoItem.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRepeat} from '@fortawesome/free-solid-svg-icons';
@@ -9,15 +8,34 @@ import { useTodos } from "../../../contexts/TodoContext";
 import { useSpoonContext } from "../../../contexts/SpoonContext";
 import IconToggler from "../IconToggler/IconToggler";
 import { faXmark, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 export default function TodoItem({todo, type}) {
     const {alterCompleteStatus} = useTodos();
+    const navigate = useNavigate();
     let btn;
 
+    function gotoTodo(e) {
+        e.stopPropagation();
+        navigate(`/todos/${todo.id}`);
+    }
+
+    async function buttonAction(e, type) {
+        e.stopPropagation();
+
+        if (type == 'todo') {
+            await alterCompleteStatus({id:todo.id, newStatus:true});
+        } else if (type == 'delete') {
+
+        } else if (type == 'complete') {
+            await alterCompleteStatus({id:todo.id, newStatus:false});
+        }
+    }
+
     if(type == 'todo') {
-        btn = <Checkbox value={false} onClick={async (e) => {
-                await alterCompleteStatus({id:todo.id, newStatus:true});
-            }
-        } className="mark-complete"></Checkbox>
+        btn = <Checkbox 
+        value={false} 
+        onClick={(e) => buttonAction(e, type)}
+        className="mark-complete"></Checkbox>
     } else if (type == 'delete') {
         btn = <IconToggler
         small={true}
@@ -27,9 +45,7 @@ export default function TodoItem({todo, type}) {
         </IconToggler>
     } else if (type == 'complete') {
         btn = <IconToggler
-        onClick={async e => {
-            await alterCompleteStatus({id:todo.id, newStatus:false});
-        }}
+        onClick={(e) => buttonAction(e, type)}
         small={true}
         square={true}
         className="mark-complete">
@@ -39,7 +55,7 @@ export default function TodoItem({todo, type}) {
         btn = null;
     }
 
-    return <div className="todo-item">
+    return <div className="todo-item" onClick={gotoTodo}>
         {btn}
         <p className="todo-text">{todo.text}</p>
         <div className="todo-meta">

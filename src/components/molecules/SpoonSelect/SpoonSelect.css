@@ -2,3 +2,10 @@
     display: flex;
     justify-content: space-between;
 }
+
+@media screen and (min-width: 480px) {
+    .spoon-select {
+        justify-content: flex-start;
+        gap: var(--xxl-spacing);
+    }
+  }

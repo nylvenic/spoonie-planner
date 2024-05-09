@@ -1,9 +1,10 @@
 import { useContext, createContext, useState, useCallback } from "react";
 import todoManager from "../models/TodoList/TodoListManager";
 import Todo from "../models/TodoList/Todo";
+
 const TodoContext = createContext();
 
-export const TodoProvider = ({children}) => {
+export const TodoProvider = ({ children }) => {
     const [todos, setTodos] = useState([]);
     const [deleted, setDeleted] = useState([]);
     const [completed, setCompleted] = useState([]);
@@ -13,43 +14,48 @@ export const TodoProvider = ({children}) => {
         setTodos(result);
     }, []);
 
-    const fetchDeleted = useCallback(async() => {
+    const fetchDeleted = useCallback(async () => {
         const result = await todoManager.getAll('deleted');
         setDeleted(result);
     }, []);
 
-    const fetchCompleted = useCallback(async() => {
+    const fetchCompleted = useCallback(async () => {
         const result = await todoManager.getAll('completed');
         setCompleted(result);
     }, []);
 
-
-    const alterCompleteStatus = useCallback(async function({id, newStatus}) {
-        const result = await todoManager.completeTodo({id, newStatus});
+    const alterCompleteStatus = useCallback(async ({ id, newStatus }) => {
+        await todoManager.alterCompleteStatus({ id, newStatus });
         await fetchTodos();
         await fetchCompleted();
-    });
+    }, [fetchTodos, fetchCompleted]);
 
-    const quickCreate = useCallback(async({text, date, cost, repeat, replenish}) => {
-        const todo = new Todo({text, date, cost, repeat, replenish});
+    const create = useCallback(async (data) => {
+        const todo = new Todo(data);
         await todoManager.createTodo(todo);
         await fetchTodos();
-    }, []);
+    }, [fetchTodos]);
+
+    const update = useCallback(async ({ data, id }) => {
+        const todo = new Todo(data);
+        console.log(data);
+        await todoManager.updateTodo({ data: todo, id });
+        await fetchTodos();
+    }, [fetchTodos]);
 
     const value = {
         fetchTodos,
         fetchDeleted,
         fetchCompleted,
-        quickCreate,
+        create,
+        update,
         alterCompleteStatus,
         todos,
         deleted,
-        completed
-    }
+        completed,
+    };
 
-    return <TodoContext.Provider value={value}>
-        {children}
-    </TodoContext.Provider>
-}
+    return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
+};
 
 export const useTodos = () => useContext(TodoContext);

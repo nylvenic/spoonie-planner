@@ -47,6 +47,12 @@
     width: 1.2rem;
 }
 
+.side-popup .controls {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 0;
+}
+
 @keyframes appear {
     0% {
         transform:translateX(-45%);

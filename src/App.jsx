@@ -5,6 +5,7 @@ import Today from "./pages/Today.jsx";
 import Login from "./pages/Login.jsx";
 import Index from "./pages/Index.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import Todo from './pages/Todo.jsx';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -52,6 +53,12 @@ const router = createBrowserRouter([
     path: "/settings",
     element: (
       <Settings></Settings>
+    ),
+  },
+  {
+    path: "/todos/:id",
+    element: (
+      <Todo></Todo>
     ),
   },
 ]);
