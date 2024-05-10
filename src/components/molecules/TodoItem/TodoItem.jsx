@@ -9,8 +9,11 @@ import { useSpoonContext } from "../../../contexts/SpoonContext";
 import IconToggler from "../IconToggler/IconToggler";
 import { faXmark, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
 export default function TodoItem({todo, type}) {
     const {alterCompleteStatus} = useTodos();
+    const {modifySpoons} = useSpoonContext();
+    const {userData} = useAuth();
     const navigate = useNavigate();
     let btn;
 
@@ -24,10 +27,12 @@ export default function TodoItem({todo, type}) {
 
         if (type == 'todo') {
             await alterCompleteStatus({id:todo.id, newStatus:true});
+            await modifySpoons({cost:todo.cost, replenish:todo.replenish, maxSpoons: userData.maxSpoons})
         } else if (type == 'delete') {
-
+            
         } else if (type == 'complete') {
             await alterCompleteStatus({id:todo.id, newStatus:false});
+            await modifySpoons({cost:todo.cost, replenish:!(todo.replenish), maxSpoons: userData.maxSpoons})
         }
     }
 

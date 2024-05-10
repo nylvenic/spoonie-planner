@@ -12,16 +12,27 @@ export const SpoonContextProvider = ({ children }) => {
     const {userData} = useAuth();
     const [spoons, setSpoons] = useState(0);
     const [maxSpoons, setMaxSpoons] = useState(0);
+    console.log(userData);
     
-    const modifySpoons = (cost, isReplenish) => {
-        if(isReplenish) {
-            spoonManager.increase(cost);
-        } else if(!isReplenish) {
-            spoonManager.decrease(cost);
-        } else {
-            throw new Error('Invalid replenish value provided, must be a boolean.');
+    const modifySpoons = async ({cost, replenish, maxSpoons}) => {
+        if(userData) {
+            const res = await fetch(`${CONSTANTS.backend_url}/users/${userData.userId}/spoons`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('jwt')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cost, 
+                        replenish, 
+                        maxSpoons
+                    })
+                }
+            );
+            const data = await res.json();
+            setSpoons(data.newSpoons);
         }
-        setSpoons(() => spoonManager.spoons);
     };
 
     async function getSpoons() {
@@ -32,7 +43,8 @@ export const SpoonContextProvider = ({ children }) => {
                 }
             });
             const json = (await data.json()).result;
-            setSpoons(json.spoons);
+            console.log('SPOONS DATA', json);
+            setSpoons(json.current_spoons);
             setMaxSpoons(json.maxSpoons);
         }
     }
