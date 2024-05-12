@@ -6,6 +6,7 @@ import TaskList from "../components/organisms/TaskList/TaskList.jsx";
 import QuickAddPopup from '../components/organisms/QuickAddPopup/QuickAddPopup.jsx';
 import SidePopup from '../components/organisms/SidePopup/SidePopup.jsx';
 import Nav from '../components/organisms/Nav/Nav.jsx';
+import CONSTANTS from "../models/utils/CONSTANTS.js";
 export default function Completed() {
     return <>
     <Nav text="Completed"></Nav>
@@ -13,7 +14,7 @@ export default function Completed() {
       <SpoonMeter></SpoonMeter>
       <QuickAdd></QuickAdd>
       <TodoProvider>
-        <TaskList type="complete"></TaskList>
+        <TaskList type={CONSTANTS.TODO_TYPE.COMPLETED}></TaskList>
         <QuickAddPopup></QuickAddPopup>
       </TodoProvider>
     </SpoonContextProvider>

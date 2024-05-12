@@ -30,6 +30,20 @@ export const TodoProvider = ({ children }) => {
         await fetchCompleted();
     }, [fetchTodos, fetchCompleted]);
 
+    const deleteTodo = useCallback(async (id) => {
+        await todoManager.deleteTodo(id);
+        await fetchTodos();
+        await fetchCompleted();
+        await fetchDeleted();
+    }, [fetchTodos, fetchDeleted]);
+
+    const alterDeletedStatus = useCallback(async ({id, newStatus}) => {
+        await todoManager.alterDeletedStatus({id, newStatus});
+        await fetchTodos();
+        await fetchCompleted();
+        await fetchDeleted();
+    }, [fetchTodos, fetchCompleted, fetchDeleted]);
+
     const create = useCallback(async (data) => {
         const todo = new Todo(data);
         await todoManager.createTodo(todo);
@@ -50,6 +64,8 @@ export const TodoProvider = ({ children }) => {
         create,
         update,
         alterCompleteStatus,
+        alterDeletedStatus,
+        deleteTodo,
         todos,
         deleted,
         completed,

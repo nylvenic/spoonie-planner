@@ -42,6 +42,7 @@
 
 .todo-fields .controls {
     display: flex;
+    gap: var(--small-spacing);
     justify-content: end;
 }
 

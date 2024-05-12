@@ -10,45 +10,68 @@ import IconToggler from "../IconToggler/IconToggler";
 import { faXmark, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
+import CONSTANTS from "../../../models/utils/CONSTANTS";
 export default function TodoItem({todo, type}) {
-    const {alterCompleteStatus} = useTodos();
+    const {alterCompleteStatus, alterDeletedStatus} = useTodos();
     const {modifySpoons} = useSpoonContext();
     const {userData} = useAuth();
     const navigate = useNavigate();
     let btn;
 
+    function mapType(type) {
+        let editMode;
+        switch(type) {
+            case CONSTANTS.TODO_TYPE.COMPLETED: {
+                editMode = CONSTANTS.EDIT_MODE.UPDATE;
+                break;
+            }
+            case CONSTANTS.TODO_TYPE.DELETED: {
+                editMode = CONSTANTS.EDIT_MODE.DELETE;
+                break;
+            }
+            case CONSTANTS.TODO_TYPE.INBOX: {
+                editMode = CONSTANTS.EDIT_MODE.UPDATE;
+                break;
+            }
+            case CONSTANTS.TODO_TYPE.TODO: {
+                editMode = CONSTANTS.EDIT_MODE.UPDATE;
+                break;
+            }
+        }
+        return editMode;
+    }
+
     function gotoTodo(e) {
         e.stopPropagation();
-        navigate(`/todos/${todo.id}`);
+        navigate(`/todos/${todo.id}?page=${mapType(type)}`);
     }
 
     async function buttonAction(e, type) {
         e.stopPropagation();
 
-        if (type == 'todo') {
+        if (type == CONSTANTS.TODO_TYPE.TODO) {
             await alterCompleteStatus({id:todo.id, newStatus:true});
             await modifySpoons({cost:todo.cost, replenish:todo.replenish, maxSpoons: userData.maxSpoons})
-        } else if (type == 'delete') {
-            
-        } else if (type == 'complete') {
+        } else if (type == CONSTANTS.TODO_TYPE.DELETED) {
+        } else if (type == CONSTANTS.TODO_TYPE.COMPLETED) {
             await alterCompleteStatus({id:todo.id, newStatus:false});
             await modifySpoons({cost:todo.cost, replenish:!(todo.replenish), maxSpoons: userData.maxSpoons})
         }
     }
 
-    if(type == 'todo') {
+    if(type == CONSTANTS.TODO_TYPE.TODO) {
         btn = <Checkbox 
         value={false} 
         onClick={(e) => buttonAction(e, type)}
         className="mark-complete"></Checkbox>
-    } else if (type == 'delete') {
+    } else if (type == CONSTANTS.TODO_TYPE.DELETED) {
         btn = <IconToggler
         small={true}
         square={true}
         className="mark-complete">
             <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
         </IconToggler>
-    } else if (type == 'complete') {
+    } else if (type == CONSTANTS.TODO_TYPE.COMPLETED) {
         btn = <IconToggler
         onClick={(e) => buttonAction(e, type)}
         small={true}

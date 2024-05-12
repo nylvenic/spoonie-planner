@@ -22,6 +22,20 @@ class TodoListManager {
         return response;
     }
 
+    async alterDeletedStatus({id, newStatus}) {
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/markForDeletion`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${Cookies.get('jwt')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                newStatus
+            })
+        });
+        return response;
+    }
+
     async getById(id) {
         const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
             headers: {
@@ -31,17 +45,14 @@ class TodoListManager {
         return response;
     }
 
-    uncompleteTodo(id) {
-        const {removed} = this.completed.remove(id);
-        removed.completed = false;
-        this.todos.add(removed);
-        return removed;
-    }
-
-    deleteTodo(id) {
-        const {removed} = this.todos.remove(id);
-        this.deleted.add(removed);
-        return removed;
+    async deleteTodo(id) {
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${Cookies.get('jwt')}`
+            }
+        });
+        return response;
     }
 
     async getAll(status) {

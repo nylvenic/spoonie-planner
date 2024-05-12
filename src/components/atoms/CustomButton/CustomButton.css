@@ -1,14 +1,40 @@
-.MuiButton-contained.custom-button {
-    background: var(--primary-color) !important;
-}
-
-
-.MuiButton-outlined.custom-button {
+.MuiButton-outlined.custom-button.base-color {
     color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
+.MuiButton-outlined.custom-button.danger-color {
+    color: var(--error-color);
+    border-color: var(--error-color);
+}
+
+.MuiButton-outlined.custom-button.danger-color path {
+    color: var(--error-color);
+}
+
+.MuiButton-outlined.custom-button.base-color path {
+    color: var(--primary-color);
+}
+
 .custom-button {
+    border-radius: 10px !important;
+    min-width: auto !important;
+}
+
+.MuiButton-contained.custom-button.base-color {
+    background: var(--primary-color) !important;
+}
+
+.MuiButton-contained.custom-button.danger-color {
+    background: var(--error-color);
+}
+
+.MuiButton-contained.custom-button.base-color path,
+.MuiButton-contained.custom-button.danger-color path {
+    color: var(--light) !important;
+}
+
+.custom-button.rounded {
     border-radius: 9999px !important;
 }
 

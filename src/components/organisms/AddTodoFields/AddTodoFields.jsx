@@ -1,13 +1,18 @@
 import './AddTodoFields.css';
-import { TextField, FormControlLabel, Switch, Button } from "@mui/material";
+import { TextField, FormControlLabel, Switch } from "@mui/material";
 import SpoonSelect from '../../molecules/SpoonSelect/SpoonSelect';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider, MobileDateTimePicker } from "@mui/x-date-pickers";
 import { useEffect, useState } from "react";
 import { useTodos } from '../../../contexts/TodoContext';
+import CustomButton from '../../atoms/CustomButton/CustomButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import CONSTANTS from '../../../models/utils/CONSTANTS';
 
-export default function AddTodoFields({ todo, modal = false, mode = 'create', cb = () => {} }) {
+export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.EDIT_MODE.CREATE, cb = () => {} }) {
     const todos = useTodos(); // Ensure this is not undefined and returns proper methods.
     const [todoName, setTodoName] = useState('');
     const [description, setDescription] = useState('');
@@ -15,6 +20,7 @@ export default function AddTodoFields({ todo, modal = false, mode = 'create', cb
     const [cost, setCost] = useState(1);
     const [repeat, setRepeat] = useState(false);
     const [replenish, setReplenish] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (todo) {
@@ -41,19 +47,32 @@ export default function AddTodoFields({ todo, modal = false, mode = 'create', cb
         const todoData = { text: todoName, date, cost, repeat, replenish, description };
 
         try {
-            console.log(todos);
-            if (mode === 'create') {
+            if (mode === CONSTANTS.EDIT_MODE.CREATE) {
                 await todos.create(todoData);
                 resetAll();
-            } else if (mode === 'update') {
+            } else if (mode === CONSTANTS.EDIT_MODE.UPDATE) {
                 await todos.update({data: todoData, id: todo.id});
+            } else if (mode === CONSTANTS.EDIT_MODE.DELETE) {
+                await todos.alterDeletedStatus({id:todo.id, newStatus: false});
+                navigate(`/todos/${todo.id}`);
             } else {
-                console.error('Invalid mode: Please use "create" or "update".');
+                console.error('Invalid mode: Please use CONSTANTS.');
             }
             cb(); // Trigger callback if provided
         } catch (error) {
             console.error('An error occurred:', error);
         }
+    }
+
+    async function deleteAction() {
+        await todos.deleteTodo(todo.id);
+        navigate('/deleted');
+    } 
+
+    async function handleTrashClick(e) {
+        e.preventDefault();
+        await todos.alterDeletedStatus({id:todo.id, newStatus: true});
+        navigate('/');
     }
 
     return (
@@ -102,11 +121,20 @@ export default function AddTodoFields({ todo, modal = false, mode = 'create', cb
                     onChange={(e) => setDescription(e.target.value)}
                     value={description}
                 />
-            )}
+            )} 
             <div className="controls">
-                <Button type="submit" variant='contained' className='create-btn'>
-                    {mode === 'create' ? 'Create Todo' : mode === 'update' ? 'Update Todo' : 'Invalid Mode'}
-                </Button>
+                {(mode === CONSTANTS.EDIT_MODE.UPDATE || mode === CONSTANTS.EDIT_MODE.TODO) ? 
+                <CustomButton fullWidth={false} variant='contained' color="danger" onClick={handleTrashClick}> 
+                    <FontAwesomeIcon size="lg" icon={faTrash}></FontAwesomeIcon>
+                </CustomButton> : ''}
+                {mode === CONSTANTS.EDIT_MODE.DELETE && 
+                <CustomButton onClick={deleteAction} fullWidth={false} color="danger" variant='contained'>Delete Forever</CustomButton>}
+                <CustomButton fullWidth={false} type="submit" variant='contained' className='create-btn'>
+                    {mode === CONSTANTS.EDIT_MODE.CREATE ? 'Create Todo' : 
+                     mode === CONSTANTS.EDIT_MODE.UPDATE ? 'Update Todo' :
+                     mode === CONSTANTS.EDIT_MODE.DELETE ? 'Restore' : 
+                     'Invalid Mode'}
+                </CustomButton>
             </div>
         </form>
     );
