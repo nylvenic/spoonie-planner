@@ -61,7 +61,10 @@ class TodoListManager {
             statusString = '?status=deleted';
         } else if(status == 'completed') {
             statusString = '?status=completed';
+        } else if(status =='today') {
+            statusString = '?status=today';
         }
+
         const response = await fetch(`${CONSTANTS.backend_url}/todos${statusString}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('jwt')}`

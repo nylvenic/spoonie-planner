@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import CONSTANTS from "../../../models/utils/CONSTANTS";
 export default function TodoItem({todo, type}) {
-    const {alterCompleteStatus, alterDeletedStatus} = useTodos();
+    const {alterCompleteStatus} = useTodos();
     const {modifySpoons} = useSpoonContext();
     const {userData} = useAuth();
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function TodoItem({todo, type}) {
                 editMode = CONSTANTS.EDIT_MODE.UPDATE;
                 break;
             }
-            case CONSTANTS.TODO_TYPE.TODO: {
+            case CONSTANTS.TODO_TYPE.TODAY: {
                 editMode = CONSTANTS.EDIT_MODE.UPDATE;
                 break;
             }
@@ -49,7 +49,7 @@ export default function TodoItem({todo, type}) {
     async function buttonAction(e, type) {
         e.stopPropagation();
 
-        if (type == CONSTANTS.TODO_TYPE.TODO) {
+        if (type == CONSTANTS.TODO_TYPE.INBOX || type == CONSTANTS.TODO_TYPE.TODAY) {
             await alterCompleteStatus({id:todo.id, newStatus:true});
             await modifySpoons({cost:todo.cost, replenish:todo.replenish, maxSpoons: userData.maxSpoons})
         } else if (type == CONSTANTS.TODO_TYPE.DELETED) {
@@ -59,7 +59,7 @@ export default function TodoItem({todo, type}) {
         }
     }
 
-    if(type == CONSTANTS.TODO_TYPE.TODO) {
+    if(type == CONSTANTS.TODO_TYPE.TODAY || type == CONSTANTS.TODO_TYPE.INBOX) {
         btn = <Checkbox 
         value={false} 
         onClick={(e) => buttonAction(e, type)}

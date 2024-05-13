@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useCallback } from "react";
+import { useContext, createContext, useState, useCallback, useEffect } from "react";
 import todoManager from "../models/TodoList/TodoListManager";
 import Todo from "../models/TodoList/Todo";
 
@@ -6,6 +6,7 @@ const TodoContext = createContext();
 
 export const TodoProvider = ({ children }) => {
     const [todos, setTodos] = useState([]);
+    const [today, setToday] = useState([]);
     const [deleted, setDeleted] = useState([]);
     const [completed, setCompleted] = useState([]);
 
@@ -22,6 +23,11 @@ export const TodoProvider = ({ children }) => {
     const fetchCompleted = useCallback(async () => {
         const result = await todoManager.getAll('completed');
         setCompleted(result);
+    }, []);
+
+    const fetchToday = useCallback(async () => {
+        const result = await todoManager.getAll('today');
+        setToday(result);
     }, []);
 
     const alterCompleteStatus = useCallback(async ({ id, newStatus }) => {
@@ -48,6 +54,7 @@ export const TodoProvider = ({ children }) => {
         const todo = new Todo(data);
         await todoManager.createTodo(todo);
         await fetchTodos();
+        await fetchToday();
     }, [fetchTodos]);
 
     const update = useCallback(async ({ data, id }) => {
@@ -56,7 +63,7 @@ export const TodoProvider = ({ children }) => {
         await todoManager.updateTodo({ data: todo, id });
         await fetchTodos();
     }, [fetchTodos]);
-
+    
     const value = {
         fetchTodos,
         fetchDeleted,
@@ -66,9 +73,11 @@ export const TodoProvider = ({ children }) => {
         alterCompleteStatus,
         alterDeletedStatus,
         deleteTodo,
+        fetchToday,
         todos,
         deleted,
         completed,
+        today,
     };
 
     return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

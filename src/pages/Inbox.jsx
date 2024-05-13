@@ -8,11 +8,11 @@ import SidePopup from '../components/organisms/SidePopup/SidePopup.jsx';
 import Nav from '../components/organisms/Nav/Nav.jsx';
 export default function Home() {
     return <>
-    <Nav text="Today"></Nav>
+    <Nav text="Inbox"></Nav>
     <SpoonContextProvider>
       <SpoonMeter></SpoonMeter>
       <QuickAdd></QuickAdd>
-      <TaskList type={CONSTANTS.TODO_TYPE.TODAY}></TaskList>
+      <TaskList type={CONSTANTS.TODO_TYPE.INBOX}></TaskList>
       <QuickAddPopup></QuickAddPopup>
     </SpoonContextProvider>
     <SidePopup></SidePopup>

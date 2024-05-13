@@ -8,8 +8,8 @@ export default {
     },
     TODO_TYPE: {
         COMPLETED: 'COMPLETED',
+        TODAY: 'TODAY',
         DELETED: 'DELETED',
-        TODO: 'TODO',
         INBOX: 'INBOX',
     }
 }

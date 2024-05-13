@@ -5,6 +5,7 @@ import Today from "./pages/Today.jsx";
 import Login from "./pages/Login.jsx";
 import Index from "./pages/Index.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import Inbox from './pages/Inbox.jsx';
 import Todo from './pages/Todo.jsx';
 import {
   createBrowserRouter,
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <Index></Index>
+    ),
+  },
+  {
+    path: "/inbox",
+    element: (
+      <Inbox></Inbox>
     ),
   },
   {
