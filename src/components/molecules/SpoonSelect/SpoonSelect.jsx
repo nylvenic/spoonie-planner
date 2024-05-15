@@ -25,7 +25,7 @@ export default function SpoonSelect({ onChange, value=1 }) {
                 {Array.from({ length: 5 }, (_, index) => (
                     <IconToggler
                         key={index}
-                        on={index < selectedSpoons}
+                        on={index < selectedSpoons} 
                         onClick={() => handleSpoonClick(index)}
                     >
                         <Spoon />

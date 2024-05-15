@@ -14,7 +14,7 @@ export default function QuickAddPopup() {
 
     return (<>
       <Overlay onClick={() => setQuickAddPopup(false)}></Overlay>
-        <dialog ref={dialog} open className="quick-add-popup">
+      <dialog ref={dialog} open className="quick-add-popup">
         <AddTodoFields modal={true} cb={() => setQuickAddPopup(false)}></AddTodoFields>
       </dialog>
     </>);

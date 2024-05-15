@@ -33,29 +33,32 @@ export const TodoProvider = ({ children }) => {
     const alterCompleteStatus = useCallback(async ({ id, newStatus }) => {
         await todoManager.alterCompleteStatus({ id, newStatus });
         await fetchTodos();
+        await fetchToday();
         await fetchCompleted();
-    }, [fetchTodos, fetchCompleted]);
+    }, [fetchTodos, fetchCompleted, fetchToday]);
 
     const deleteTodo = useCallback(async (id) => {
         await todoManager.deleteTodo(id);
         await fetchTodos();
+        await fetchToday();
         await fetchCompleted();
         await fetchDeleted();
-    }, [fetchTodos, fetchDeleted]);
+    }, [fetchTodos, fetchDeleted, fetchToday, fetchCompleted]);
 
     const alterDeletedStatus = useCallback(async ({id, newStatus}) => {
         await todoManager.alterDeletedStatus({id, newStatus});
         await fetchTodos();
+        await fetchToday();
         await fetchCompleted();
         await fetchDeleted();
-    }, [fetchTodos, fetchCompleted, fetchDeleted]);
+    }, [fetchTodos, fetchCompleted, fetchDeleted, fetchToday]);
 
     const create = useCallback(async (data) => {
         const todo = new Todo(data);
         await todoManager.createTodo(todo);
         await fetchTodos();
         await fetchToday();
-    }, [fetchTodos]);
+    }, [fetchTodos, fetchToday]);
 
     const update = useCallback(async ({ data, id }) => {
         const todo = new Todo(data);

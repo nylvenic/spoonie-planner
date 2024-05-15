@@ -8,11 +8,10 @@ import Cookies from "js-cookie";
 const SpoonContext = createContext();
 const spoonManager = new SpoonMeterController();
 
-export const SpoonContextProvider = ({ children }) => {
+export const SpoonContextProvider = ({ children, customSpoons=0, customMaxSpoons=0 }) => {
     const {userData} = useAuth();
-    const [spoons, setSpoons] = useState(0);
-    const [maxSpoons, setMaxSpoons] = useState(0);
-    console.log(userData);
+    const [spoons, setSpoons] = useState(customSpoons);
+    const [maxSpoons, setMaxSpoons] = useState(customMaxSpoons);
     
     const modifySpoons = async ({cost, replenish, maxSpoons}) => {
         if(userData) {
@@ -56,8 +55,8 @@ export const SpoonContextProvider = ({ children }) => {
     const value = {
         modifySpoons,
         getSpoons,
-        spoons,
-        maxSpoons: userData ? userData.maxSpoons : 12,
+        spoons: customSpoons && spoons,
+        maxSpoons: userData ? userData.maxSpoons : customMaxSpoons,
     };
 
     return <SpoonContext.Provider value={value}>

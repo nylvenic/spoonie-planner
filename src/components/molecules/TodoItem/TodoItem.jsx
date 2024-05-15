@@ -43,7 +43,7 @@ export default function TodoItem({todo, type}) {
 
     function gotoTodo(e) {
         e.stopPropagation();
-        navigate(`/todos/${todo.id}?page=${mapType(type)}`);
+        navigate(`/todos/${todo.id}?page=${mapType(type)}&type=${type}`);
     }
 
     async function buttonAction(e, type) {
@@ -94,7 +94,7 @@ export default function TodoItem({todo, type}) {
                 [...Array(todo.cost).keys()].map(spoons => <Spoon key={spoons}></Spoon>)}
             </div>
             <span className="divider">•</span>
-            <p className="date">{dayjs(todo.date).format('LT')}</p>
+            <p className="date">{dayjs(todo.date * 1000).format('MMM D, YYYY h:mm A')}</p>
             {todo.repeat ? <FontAwesomeIcon icon={faRepeat}></FontAwesomeIcon> : ''}
         </div>
     </div>

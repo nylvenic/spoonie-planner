@@ -11,5 +11,12 @@ export default {
         TODAY: 'TODAY',
         DELETED: 'DELETED',
         INBOX: 'INBOX',
+    },
+    ids: {
+        AddTodoFields: 'add-todo-fields',
+        Overlay: 'overlay',
+        QuickAddButton: 'quick-add-button',
+        SpoonMeterPoint: 'point',
+        SpoonMeterUsed: 'used',
     }
 }

@@ -10,7 +10,7 @@ import queryString from "query-string";
 export default function Todo() {
     const {id} = useParams();
     const location = useLocation();
-    const {page} = queryString.parse(location.search);
+    const {page, type} = queryString.parse(location.search);
     const [todo, setTodo] = useState(null);
     
     async function fetchTodoData() {
@@ -25,6 +25,6 @@ export default function Todo() {
 
     return <>
         <Nav inner={true} text="Edit Task"></Nav>
-        <AddTodoFields todo={todo} mode={CONSTANTS.EDIT_MODE[page]} cb={fetchTodoData}></AddTodoFields>
+        <AddTodoFields todo={todo} type={CONSTANTS.TODO_TYPE[type]} mode={CONSTANTS.EDIT_MODE[page]} cb={fetchTodoData}></AddTodoFields>
     </>
 }

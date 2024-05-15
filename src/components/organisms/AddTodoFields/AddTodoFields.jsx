@@ -12,7 +12,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../../models/utils/CONSTANTS';
 
-export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.EDIT_MODE.CREATE, cb = () => {} }) {
+export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.EDIT_MODE.CREATE, type = CONSTANTS.TODO_TYPE.INBOX, cb = () => {} }) {
     const todos = useTodos(); // Ensure this is not undefined and returns proper methods.
     const [todoName, setTodoName] = useState('');
     const [description, setDescription] = useState('');
@@ -54,7 +54,13 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
                 await todos.update({data: todoData, id: todo.id});
             } else if (mode === CONSTANTS.EDIT_MODE.DELETE) {
                 await todos.alterDeletedStatus({id:todo.id, newStatus: false});
-                navigate(`/todos/${todo.id}`);
+                if(type == CONSTANTS.TODO_TYPE.TODAY) {
+                    navigate(`/today/${todo.id}`);
+                } else if (type == CONSTANTS.TODO_TYPE.INBOX) {
+                    navigate(`/inbox/${todo.id}`);
+                } else {
+                    navigate(`/`);
+                }
             } else {
                 console.error('Invalid mode: Please use CONSTANTS.');
             }
@@ -76,7 +82,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
     }
 
     return (
-        <form className={`todo-fields ${modal ? '' : 'fill-screen'}`} onSubmit={handleSubmit}>
+        <form data-testid={CONSTANTS.ids.AddTodoFields} className={`todo-fields ${modal ? '' : 'fill-screen'}`} onSubmit={handleSubmit}>
             <TextField
                 required
                 label="What are you doing today?"
