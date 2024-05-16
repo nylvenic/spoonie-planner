@@ -14,9 +14,11 @@ export default {
     },
     ids: {
         AddTodoFields: 'add-todo-fields',
+        AddTodoFieldsModal: 'add-todo-fields-modal',
         Overlay: 'overlay',
         QuickAddButton: 'quick-add-button',
         SpoonMeterPoint: 'point',
         SpoonMeterUsed: 'used',
+        spoonSelectSelected: 'spoon-select-selected',
     }
 }

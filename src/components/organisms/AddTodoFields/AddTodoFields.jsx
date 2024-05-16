@@ -82,7 +82,8 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
     }
 
     return (
-        <form data-testid={CONSTANTS.ids.AddTodoFields} className={`todo-fields ${modal ? '' : 'fill-screen'}`} onSubmit={handleSubmit}>
+        <form data-testid={modal ? CONSTANTS.ids.AddTodoFieldsModal : CONSTANTS.ids.AddTodoFields} 
+        className={`todo-fields ${modal ? '' : 'fill-screen'}`} onSubmit={handleSubmit}>
             <TextField
                 required
                 label="What are you doing today?"

@@ -55,7 +55,7 @@ export const SpoonContextProvider = ({ children, customSpoons=0, customMaxSpoons
     const value = {
         modifySpoons,
         getSpoons,
-        spoons: customSpoons && spoons,
+        spoons: customSpoons || spoons,
         maxSpoons: userData ? userData.maxSpoons : customMaxSpoons,
     };
 

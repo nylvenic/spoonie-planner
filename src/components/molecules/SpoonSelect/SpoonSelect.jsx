@@ -24,6 +24,7 @@ export default function SpoonSelect({ onChange, value=1 }) {
             <div className="spoon-select">
                 {Array.from({ length: 5 }, (_, index) => (
                     <IconToggler
+                        data-testid={value == index ? "spoon-select-selected" : ""}
                         key={index}
                         on={index < selectedSpoons} 
                         onClick={() => handleSpoonClick(index)}
