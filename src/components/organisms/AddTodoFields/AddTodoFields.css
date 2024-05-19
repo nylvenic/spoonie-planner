@@ -10,6 +10,10 @@
     height: calc(100vh - var(--nav-height));
 }
 
+.todo-fields label[for="todo-description"] {
+    display: none;
+}
+
 .todo-fields textarea {
     font-size: var(--base-spacing);
     height: 100%;

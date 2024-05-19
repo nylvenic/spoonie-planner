@@ -5,10 +5,6 @@ const UIContext = createContext();
 export const UIProvider = ({children, 
     initialQuickAddPopup=false, 
     initialMenuPopup=false,
-    customCloseModals,
-    customSetMenuPopup,
-    customSetQuickAddPopup,
-    customModalIsOpened,
 }) => {
     const [quickAddPopup, setQuickAddPopup] = useState(initialQuickAddPopup);
     const [menuPopup, setMenuPopup] = useState(initialMenuPopup);
@@ -25,10 +21,10 @@ export const UIProvider = ({children,
     const value = {
         menuPopup,
         quickAddPopup,
-        closeModals: customCloseModals || closeModals,
-        setMenuPopup: customSetMenuPopup || setMenuPopup,
-        setQuickAddPopup: customSetQuickAddPopup || setQuickAddPopup,
-        modalIsOpened: customModalIsOpened || modalIsOpened
+        closeModals,
+        setMenuPopup,
+        setQuickAddPopup,
+        modalIsOpened,
     }
 
     return <UIContext.Provider value={value}>

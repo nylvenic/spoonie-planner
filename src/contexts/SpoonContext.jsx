@@ -1,4 +1,3 @@
-import SpoonMeterController from "../models/User/SpoonMeterController";
 import React from "react";
 import { useState, createContext, useContext, useEffect } from "react";
 import { useAuth } from "./AuthContext";
@@ -6,7 +5,6 @@ import CONSTANTS from "../models/utils/CONSTANTS";
 import Cookies from "js-cookie";
 
 const SpoonContext = createContext();
-const spoonManager = new SpoonMeterController();
 
 export const SpoonContextProvider = ({ children, customSpoons=0, customMaxSpoons=0 }) => {
     const {userData} = useAuth();

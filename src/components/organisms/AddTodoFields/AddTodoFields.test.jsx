@@ -3,21 +3,42 @@ import {screen, render} from '../../../models/utils/test-utils';
 import CONSTANTS from "../../../models/utils/CONSTANTS";
 import AddTodoFields from "./AddTodoFields";
 import dayjs from "dayjs";
-import { TodoProvider, useTodos } from "../../../contexts/TodoContext";
+import { useTodos } from "../../../contexts/TodoContext";
+import userEvent from "@testing-library/user-event";
+
+
+const createMock = vi.fn();
+const deleteMock = vi.fn();
+const permanentlyDeleteMock = vi.fn();
+const updateMock = vi.fn();
+const navigateMock = vi.fn();
+
+vi.mock('../../../contexts/TodoContext', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        useTodos: () => ({
+            create: createMock,
+            alterDeletedStatus: deleteMock,
+            update: updateMock,
+            deleteTodo: permanentlyDeleteMock
+        }),
+    };
+});
+
+vi.mock('react-router-dom', async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+        ...actual,
+        useNavigate: () => navigateMock
+    };
+});
 
 
 describe('AddTodoFields tests', () => {
-    vi.mock('../../../contexts/TodoContext', async (importOriginal) => {
-        const actual = await importOriginal();
-        return {
-            ...actual,
-            useTodos: vi.fn(),
-        }
-});
-
+    const todoData = { text: 'My test todo', date: +(new Date()), cost: 2, repeat: false, replenish: false, description: '', id: 2 };
+    const expectedDate = dayjs().format('MM-DD-YYYY hh:mm A').replaceAll('-', '/');
     test('Form should be initialized empty', async () => {
-        const expectedDate = dayjs().format('MM-DD-YYYY h:mm A').replaceAll('-', '/'); // Adjust format if necessary based on your input's requirements
-
         render(<AddTodoFields />);
       
         // Check if the input field is initialized as empty
@@ -29,10 +50,10 @@ describe('AddTodoFields tests', () => {
         expect(descriptionTextarea.value).toBe('');
       
         // Check initial state of switches and date pickers if necessary
-        const repeatSwitch = screen.getByLabelText('Repeat?');
+        const repeatSwitch = screen.getByRole('checkbox', {name: /repeat/i});
         expect(repeatSwitch.checked).toBeFalsy();
       
-        const replenishSwitch = screen.getByLabelText('Replenish Spoons?');
+        const replenishSwitch = screen.getByLabelText('Replenish spoons?');
         expect(replenishSwitch.checked).toBeFalsy();
       
         // Since the date picker uses dayjs, check if it is initialized to the current date
@@ -43,7 +64,6 @@ describe('AddTodoFields tests', () => {
         const costDisplay = screen.getAllByTestId(CONSTANTS.ids.spoonSelectSelected); // Assuming it displays the cost
         expect(costDisplay.length).toEqual(1);
     });
-      
 
     test('Modal prop is false, should render full screen', () => {
         // Code to check rendering mode when modal is false
@@ -59,55 +79,136 @@ describe('AddTodoFields tests', () => {
         expect(todoFields).toBeInTheDocument();
     });
 
-    test(`Edit mode is ${CONSTANTS.EDIT_MODE.CREATE}`, () => {
-        // Code to check UI elements for CREATE mode
-        beforeEach(() => {
-            useTodos.mockReturnValue({
-              create: vi.fn(),
-              update: vi.fn(),
-              deleteTodo: vi.fn()
-            });
-          });
+    test(`Edit mode is ${CONSTANTS.EDIT_MODE.CREATE}`, async () => {
+        render(<AddTodoFields mode={CONSTANTS.EDIT_MODE.CREATE} modal={true} todo={todoData} />);
+        const submitButton = screen.getByRole('button', { name: 'Create Todo' });
+        const deleteButton = screen.queryByRole('button', { name: 'Delete Todo' });
+        await userEvent.click(submitButton);
+        expect(submitButton).toBeInTheDocument();
+        expect(deleteButton).not.toBeInTheDocument();
+        expect(createMock).toHaveBeenCalled(); // throws an error
+        expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
+            text: 'My test todo',
+            cost: 2,
+            repeat: false,
+            replenish: false,
+            description: ''
+        })); // throws an error
     });
 
-    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE}`, () => {
+    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} type is ${CONSTANTS.TODO_TYPE.TODAY}`, async () => {
         // Code to check UI elements for DELETE mode
+        render(<AddTodoFields todo={todoData} type={CONSTANTS.TODO_TYPE.TODAY} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
+        const submitButton = screen.getByRole('button', { name: 'Restore' });
+        await userEvent.click(submitButton);
+        expect(navigateMock).toHaveBeenCalled();
+        expect(navigateMock).toHaveBeenCalledWith(`/today/${todoData.id}`);
     });
 
-    test(`Edit mode is ${CONSTANTS.EDIT_MODE.UPDATE}`, () => {
-        // Code to check UI elements for UPDATE mode
+    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} type is ${CONSTANTS.TODO_TYPE.INBOX}`, async () => {
+        // Code to check UI elements for DELETE mode
+        render(<AddTodoFields todo={todoData} type={CONSTANTS.TODO_TYPE.INBOX} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
+        const submitButton = screen.getByRole('button', { name: 'Restore' });
+        await userEvent.click(submitButton);
+        expect(navigateMock).toHaveBeenCalled();
+        expect(navigateMock).toHaveBeenCalledWith(`/inbox/${todoData.id}`);
+    });
+
+    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} type is ${CONSTANTS.TODO_TYPE.COMPLETED}`, async () => {
+        // Code to check UI elements for DELETE mode
+        render(<AddTodoFields todo={todoData} type={CONSTANTS.TODO_TYPE.COMPLETED} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
+        const submitButton = screen.getByRole('button', { name: 'Restore' });
+        await userEvent.click(submitButton);
+        expect(navigateMock).toHaveBeenCalled();
+        expect(navigateMock).toHaveBeenCalledWith(`/`);
+    });
+
+    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} `, async () => {
+        // Code to check UI elements for DELETE mode
+        render(<AddTodoFields todo={todoData} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
+        const deleteButton = screen.getByRole('button', { name: 'Permanently Delete' });
+        const submitButton = screen.getByRole('button', { name: 'Restore' });
+        await userEvent.click(deleteButton);
+        await userEvent.click(submitButton);
+        expect(permanentlyDeleteMock).toHaveBeenCalled();
+        expect(permanentlyDeleteMock).toHaveBeenCalledWith(todoData.id);
+        expect(deleteMock).toHaveBeenCalled();
+        expect(deleteMock).toHaveBeenCalledWith({id: todoData.id, newStatus: false});
+        expect(submitButton).toBeInTheDocument();
+    });
+
+    test(`Edit mode is ${CONSTANTS.EDIT_MODE.UPDATE}`, async () => {
+        render(<AddTodoFields todo={todoData} mode={CONSTANTS.EDIT_MODE.UPDATE}></AddTodoFields>)
+        const submitButton = screen.getByRole('button', { name: 'Update Todo' });
+        const deleteButton = screen.getByRole('button', { name: 'Delete Button' });
+        await userEvent.click(submitButton);
+        await userEvent.click(deleteButton);
+        const clone = {...todoData, date: new Date(todoData.date)};
+        delete clone.id;
+        expect(deleteMock).toHaveBeenCalled();
+        expect(updateMock).toHaveBeenCalled();
+        expect(deleteMock).toHaveBeenCalledWith(expect.objectContaining({
+            id: todoData.id,
+            newStatus: true,
+        }));
+        expect(updateMock).toHaveBeenCalledWith(expect.objectContaining({
+            data: clone, 
+            id: todoData.id
+        }));
     });
 
     test('State with todo provided', () => {
         // Code to verify component state when 'todo' prop is provided
+        render(<AddTodoFields todo={todoData} mode={CONSTANTS.EDIT_MODE.UPDATE}></AddTodoFields>)
+        const textField = screen.getByRole('textbox', {name: /what are you doing today/i});
+        const repeatToggle = screen.getByRole('checkbox', {name: /repeat/i});
+        const replenishSpoons = screen.getByRole('checkbox', {name: /replenish/i});
+        const description = screen.getByRole('textbox', {name: /description/i});
+        const dateInput = screen.getByLabelText(/Choose date/i);
+        const spoonCost = screen.getByRole('textbox', {name: /Selected cost/i, hidden: true});
+        // Using .checked for checkboxes and .value for text inputs
+        expect(textField.value).toBe(todoData.text);
+        expect(repeatToggle.checked).toBe(todoData.repeat); // Assuming repeat is a boolean
+        expect(replenishSpoons.checked).toBe(todoData.replenish); // Assuming replenish is a boolean
+        expect(description.value).toBe(todoData.description);
+        expect(dateInput.value).toBe(expectedDate);
+        expect(spoonCost.value).toBe((todoData.cost-1).toString());
+    });
+
+    test('Modal without todo provided', () => {
+        // Code to verify component initializes correctly without 'todo' prop
+        // Code to verify component state when 'todo' prop is provided
+        render(<AddTodoFields mode={CONSTANTS.EDIT_MODE.UPDATE}></AddTodoFields>)
+        const textField = screen.getByRole('textbox', {name: /what are you doing today/i});
+        const repeatToggle = screen.getByRole('checkbox', {name: /repeat/i});
+        const replenishSpoons = screen.getByRole('checkbox', {name: /replenish/i});
+        const description = screen.getByRole('textbox', {name: /description/i});
+        const dateInput = screen.getByLabelText(/Choose date/i);
+        const spoonCost = screen.getByRole('textbox', {name: /Selected cost/i, hidden: true});
+        // Using .checked for checkboxes and .value for text inputs
+        expect(textField.value).toBe('');
+        expect(repeatToggle.checked).toBe(false); // Assuming repeat is a boolean
+        expect(replenishSpoons.checked).toBe(false); // Assuming replenish is a boolean
+        expect(description.value).toBe('');
+        expect(dateInput.value).toBe(expectedDate);
+        expect(spoonCost.value).toBe('1');
     });
 
     test('State without todo provided', () => {
         // Code to verify component initializes correctly without 'todo' prop
-    });
-
-    test('Handles form submission correctly for create mode', () => {
-        // Code to simulate form submission and verify calls to context functions
-    });
-
-    test('Button triggers correct action for delete mode', () => {
-        // Code to simulate button click and verify navigation/actions
-    });
-
-    test('Changes in input fields update the state', () => {
-        // Code to input text in fields and check state updates
-    });
-
-    test('Switch toggles update the state appropriately', () => {
-        // Code to toggle switches and verify state changes
-    });
-
-    test('Navigates correctly after certain actions', () => {
-        // Code to check if the navigation after operations like delete or create is correct
-    });
-
-    test('Renders correctly based on context data', () => {
-        // Code to mock context data and verify render output
+        // Code to verify component state when 'todo' prop is provided
+        render(<AddTodoFields modal={true} mode={CONSTANTS.EDIT_MODE.UPDATE}></AddTodoFields>)
+        const textField = screen.getByRole('textbox', {name: /what are you doing today/i});
+        const repeatToggle = screen.getByRole('checkbox', {name: /repeat/i});
+        const replenishSpoons = screen.getByRole('checkbox', {name: /replenish/i});
+        const dateInput = screen.getByLabelText(/Choose date/i);
+        const spoonCost = screen.getByRole('textbox', {name: /Selected cost/i, hidden: true});
+        // Using .checked for checkboxes and .value for text inputs
+        expect(textField.value).toBe('');
+        expect(repeatToggle.checked).toBe(false); // Assuming repeat is a boolean
+        expect(replenishSpoons.checked).toBe(false); // Assuming replenish is a boolean
+        expect(dateInput.value).toBe(expectedDate);
+        expect(spoonCost.value).toBe('1');
     });
 
     test('Error handling works when API calls fail', () => {

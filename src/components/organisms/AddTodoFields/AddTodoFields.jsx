@@ -21,12 +21,11 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
     const [repeat, setRepeat] = useState(false);
     const [replenish, setReplenish] = useState(false);
     const navigate = useNavigate();
-
     useEffect(() => {
         if (todo) {
             setTodoName(todo.text || '');
             setDescription(todo.description || '');
-            setDate(new Date((todo.date * 1000) || new Date()));
+            setDate(new Date((todo.date) || new Date()));
             setCost(todo.cost || 1);
             setRepeat(!!todo.repeat_task);
             setReplenish(!!todo.replenish);
@@ -95,6 +94,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
                 <MobileDateTimePicker
                     value={dayjs(date)}
                     onChange={(e) => setDate(new Date(e.$d))}
+                    label="Date select"
                 />
             </LocalizationProvider>
             <div className="togglers">
@@ -118,24 +118,29 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
                             name="replenishing"
                         />
                     }
-                    label="Replenish Spoons?"
+                    label="Replenish spoons?"
                 />
             </div>
             <SpoonSelect value={cost} onChange={(cost) => setCost(cost)} />
             {!modal && (
-                <textarea
-                    placeholder="Enter your description here"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
-                />
+                <>
+                    <label htmlFor="todo-description">Description</label>
+                    <textarea
+                        id="todo-description"
+                        placeholder="Enter your description here"
+                        onChange={(e) => setDescription(e.target.value)}
+                        value={description}
+                        name="Todo description"
+                    />
+                </>
             )} 
             <div className="controls">
-                {(mode === CONSTANTS.EDIT_MODE.UPDATE || mode === CONSTANTS.EDIT_MODE.TODO) ? 
-                <CustomButton fullWidth={false} variant='contained' color="danger" onClick={handleTrashClick}> 
+                {(mode === CONSTANTS.EDIT_MODE.UPDATE) ? 
+                <CustomButton aria-label="Delete Button" fullWidth={false} variant='contained' color="danger" onClick={handleTrashClick}> 
                     <FontAwesomeIcon size="lg" icon={faTrash}></FontAwesomeIcon>
                 </CustomButton> : ''}
                 {mode === CONSTANTS.EDIT_MODE.DELETE && 
-                <CustomButton onClick={deleteAction} fullWidth={false} color="danger" variant='contained'>Delete Forever</CustomButton>}
+                <CustomButton onClick={deleteAction} aria-label="Permanently Delete" fullWidth={false} color="danger" variant='contained'>Delete Forever</CustomButton>}
                 <CustomButton fullWidth={false} type="submit" variant='contained' className='create-btn'>
                     {mode === CONSTANTS.EDIT_MODE.CREATE ? 'Create Todo' : 
                      mode === CONSTANTS.EDIT_MODE.UPDATE ? 'Update Todo' :

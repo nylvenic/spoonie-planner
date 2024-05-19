@@ -3,9 +3,14 @@
     justify-content: space-between;
 }
 
+.spoon-select input[type="text"],
+.spoon-select label[for="selected-cost"] {
+    display: none;
+}
+
 @media screen and (min-width: 480px) {
     .spoon-select {
         justify-content: flex-start;
         gap: var(--xxl-spacing);
     }
-  }
+}
