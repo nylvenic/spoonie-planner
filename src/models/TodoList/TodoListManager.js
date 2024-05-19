@@ -71,6 +71,7 @@ class TodoListManager {
             }
         });
         const {todos} = await response.json(); 
+        console.log(todos);
         return todos;
     }
 

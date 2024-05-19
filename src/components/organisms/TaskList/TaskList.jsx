@@ -7,7 +7,6 @@ import CONSTANTS from "../../../models/utils/CONSTANTS";
 
 export default function TaskList({ type = CONSTANTS.TODO_TYPE.TODO }) {
     const { todos, deleted, completed, today, fetchTodos, fetchDeleted, fetchCompleted, fetchToday } = useTodos();
-
     useEffect(() => {
         switch (type) {
             case CONSTANTS.TODO_TYPE.INBOX:

@@ -83,7 +83,7 @@ export default function TodoItem({todo, type}) {
         btn = null;
     }
 
-    return <div className="todo-item" onClick={gotoTodo}>
+    return <div className="todo-item" data-testid="todo-item" onClick={gotoTodo}>
         {btn}
         <p className="todo-text">{todo.text}</p>
         <div className="todo-meta">
