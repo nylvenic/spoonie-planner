@@ -7,12 +7,16 @@ import Index from "./pages/Index.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import Inbox from './pages/Inbox.jsx';
 import Todo from './pages/Todo.jsx';
+import ChangeNickname from "./pages/options/ChangeNickname.jsx";
+import ChangePassword from "./pages/options/ChangePassword.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   Link,
 } from "react-router-dom";
+import ChangeAvatar from "./pages/options/ChangeAvatar.jsx";
+import ChangeMaxSpoons from "./pages/options/ChangeMaxSpoons.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -57,10 +61,26 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/settings/change-max-spoons", // Nested path
+    element: <ChangeMaxSpoons />
+  },
+  {
+    path: "/settings/change-avatar", // Nested path
+    element: <ChangeAvatar />
+  },
+  {
+    path: "/settings/change-nickname", // Nested path
+    element: <ChangeNickname />
+  },
+  {
+    path: "/settings/change-password", // Nested path
+    element: <ChangePassword />
+  },
+  {
     path: "/settings",
     element: (
       <Settings></Settings>
-    ),
+    )
   },
   {
     path: "/todos/:id",

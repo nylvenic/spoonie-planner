@@ -8,6 +8,7 @@ import { useUIContext } from '../../../contexts/UIContext';
 import Overlay from '../../atoms/Overlay/Overlay.jsx';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext.jsx';
+import CONSTANTS from '../../../models/utils/CONSTANTS.js';
 
 export default function SidePopup() {
     const auth = useAuth();
@@ -18,7 +19,7 @@ export default function SidePopup() {
         <FontAwesomeIcon size='lg' onClick={() => setMenuPopup(false)} icon={faXmark} className="faux-close"></FontAwesomeIcon>
         <div className="side-popup">
             <div className="header">
-                <img className="profile-pic" src={profilePicture}></img>
+                <img className="profile-pic" src={CONSTANTS.backend_url + auth.userData.avatar}></img>
                 <p>{auth.userData.username}</p>
                 <div className="controls">
                     <Link onClick={closeModals} to="/settings"><IconButton><FontAwesomeIcon icon={faGear}></FontAwesomeIcon></IconButton></Link>

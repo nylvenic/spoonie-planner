@@ -10,7 +10,7 @@ import { faSpoon,
 import Page from "../../molecules/Page/Page";
 import MenuItem from "../../molecules/MenuItem/MenuItem";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 export default function SettingsPanel({type, className='', ...props}) {
     const auth = useAuth();
     const navigate = useNavigate();
@@ -23,13 +23,13 @@ export default function SettingsPanel({type, className='', ...props}) {
 
     if(type == 'account') {
         settings = <Page title="Account">
-            <MenuItem icon={faIdBadge} decoration={true}>Change Avatar</MenuItem>
-            <MenuItem icon={faPen} decoration={true}>Change Nickname</MenuItem>
-            <MenuItem icon={faLock} decoration={true}>Change Password</MenuItem>
+            <Link to="change-avatar"><MenuItem icon={faIdBadge} decoration={true}>Change Avatar</MenuItem></Link>
+            <Link to="change-nickname"><MenuItem icon={faPen} decoration={true}>Change Nickname</MenuItem></Link>
+            <Link to="change-password"><MenuItem icon={faLock} decoration={true}>Change Password</MenuItem></Link>
         </Page>;
     } else if (type == 'app') {
         settings = <Page title="App Settings">
-            <MenuItem icon={faSpoon} decoration={true}>Change Max Spoons</MenuItem>
+            <Link to="change-max-spoons"><MenuItem icon={faSpoon} decoration={true}>Change Max Spoons</MenuItem></Link>
             <MenuItem icon={faBell} decoration={true}>Browser Reminder</MenuItem>
             <MenuItem icon={faClockRotateLeft} decoration={true}>Spoon Carry-Over</MenuItem>
         </Page>

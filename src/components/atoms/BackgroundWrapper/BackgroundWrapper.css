@@ -5,5 +5,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background: var(--bg-color);
+}
+
+.background-item.nav-height {
+    height: calc(100vh - var(--nav-height));
+}
+
+.background-item.center-text {
     text-align: center;
 }
