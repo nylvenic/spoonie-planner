@@ -32,7 +32,6 @@ export default function SignUp() {
             setEmailError(true);
         }
         if(password == repeatPassword && repeatPassword) {
-            console.log('pass');
             const response = await fetch(`${CONSTANTS.backend_url}/users/create`, {
                 method: 'POST',
                 headers: {

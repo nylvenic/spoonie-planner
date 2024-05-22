@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../../models/utils/CONSTANTS';
+import MessageBox from '../../molecules/MessageBox/MessageBox';
 
 export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.EDIT_MODE.CREATE, type = CONSTANTS.TODO_TYPE.INBOX, cb = () => {} }) {
     const todos = useTodos(); // Ensure this is not undefined and returns proper methods.
@@ -20,6 +21,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
     const [cost, setCost] = useState(1);
     const [repeat, setRepeat] = useState(false);
     const [replenish, setReplenish] = useState(false);
+    const [msg, setMsg] = useState('');
     const navigate = useNavigate();
     useEffect(() => {
         if (todo) {
@@ -65,7 +67,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
             }
             cb(); // Trigger callback if provided
         } catch (error) {
-            console.error('An error occurred:', error);
+            setMsg(error.message);
         }
     }
 
@@ -83,8 +85,8 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
     return (
         <form data-testid={modal ? CONSTANTS.ids.AddTodoFieldsModal : CONSTANTS.ids.AddTodoFields} 
         className={`todo-fields ${modal ? '' : 'fill-screen'}`} onSubmit={handleSubmit}>
+            {msg && <MessageBox text={msg} error={true} cb={() => setMsg('')}></MessageBox>}
             <TextField
-                required
                 label="What are you doing today?"
                 style={{ width: '100%' }}
                 onChange={(e) => setTodoName(e.target.value)}

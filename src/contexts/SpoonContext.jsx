@@ -12,6 +12,7 @@ export const SpoonContextProvider = ({ children, customSpoons=0, customMaxSpoons
     const [maxSpoons, setMaxSpoons] = useState(customMaxSpoons);
     
     const modifySpoons = async ({cost, replenish, maxSpoons}) => {
+        console.log(userData);
         if(userData) {
             const res = await fetch(`${CONSTANTS.backend_url}/users/${userData.userId}/spoons`,
                 {

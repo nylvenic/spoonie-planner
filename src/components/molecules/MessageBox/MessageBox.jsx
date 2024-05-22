@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import CONSTANTS from '../../../models/utils/CONSTANTS';
 
 export default function MessageBox({text, error=false, className='', cb, persistent=false, ...props}) {
-    console.log(text);
     const [active, setActive] = useState(true);
     useEffect(function () {
         if(!persistent) {

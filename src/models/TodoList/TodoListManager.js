@@ -71,12 +71,10 @@ class TodoListManager {
             }
         });
         const {todos} = await response.json(); 
-        console.log(todos);
         return todos;
     }
 
     async createTodo(todo) {
-        console.log(JSON.stringify(todo));
         const response = await fetch(`${CONSTANTS.backend_url}/todos/create`, {
             method: 'POST',
             headers: {

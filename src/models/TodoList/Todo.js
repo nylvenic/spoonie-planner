@@ -2,8 +2,7 @@ export default class Todo {
     constructor({text, description='', date=new Date(), cost=1, repeat=false, completed=false, replenish=false}) {
         const errors = this.validate({text, date, cost, repeat, completed, replenish});
         if (errors.length > 0) {
-            errors.forEach(error => console.error(error.message));
-            throw new Error("Failed to create Todo due to validation errors.");
+            throw new Error(errors[0]);
         };
         this.text = text;
         this.description = description;

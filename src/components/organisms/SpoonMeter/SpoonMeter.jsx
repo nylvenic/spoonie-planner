@@ -3,8 +3,25 @@ import './SpoonMeter.css';
 import Spoon from '../../atoms/Icon/Spoon.jsx';
 import CONSTANTS from '../../../models/utils/CONSTANTS.js';
 import { useSpoonContext } from '../../../contexts/SpoonContext.jsx';
+import { useEffect } from 'react';
+import { useAuth } from '../../../contexts/AuthContext.jsx';
 export default function SpoonMeter() {
-    const {spoons, maxSpoons} = useSpoonContext();
+    const {userData} = useAuth();
+    const {spoons, maxSpoons, modifySpoons} = useSpoonContext();
+    useEffect(() => {
+        async function isResetNecessary() {
+            const lastVisited = localStorage.getItem('lastVisited');
+            const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+        
+            if ((lastVisited !== today) && userData) {
+                console.log('ran');
+                await modifySpoons({cost: maxSpoons, replenish: true, maxSpoons: maxSpoons});
+                // Update last visited date
+                localStorage.setItem('lastVisited', today);
+            }
+        }
+        isResetNecessary();
+    }, [userData])
     return <Container>
         <div className="meter">
             <div className="point-wrapper">
