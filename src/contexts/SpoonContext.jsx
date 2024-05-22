@@ -33,14 +33,13 @@ export const SpoonContextProvider = ({ children, customSpoons=0, customMaxSpoons
     };
 
     async function getSpoons() {
-        if(userData) {
+        if(userData && !userData.test) {
             const data = await fetch(`${CONSTANTS.backend_url}/users/${userData.userId}/spoons`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('jwt')}`
                 }
             });
             const json = (await data.json()).result;
-            console.log('SPOONS DATA', json);
             setSpoons(json.current_spoons);
             setMaxSpoons(json.maxSpoons);
         }

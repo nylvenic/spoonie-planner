@@ -96,32 +96,23 @@ describe('AddTodoFields tests', () => {
         })); // throws an error
     });
 
-    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} type is ${CONSTANTS.TODO_TYPE.TODAY}`, async () => {
-        // Code to check UI elements for DELETE mode
-        render(<AddTodoFields todo={todoData} type={CONSTANTS.TODO_TYPE.TODAY} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
-        const submitButton = screen.getByRole('button', { name: 'Restore' });
-        await userEvent.click(submitButton);
-        expect(navigateMock).toHaveBeenCalled();
-        expect(navigateMock).toHaveBeenCalledWith(`/today/${todoData.id}`);
-    });
+    for(let type in CONSTANTS.TODO_TYPE) {
+        const navigateLink = {
+            [CONSTANTS.TODO_TYPE.TODAY]: `/today/${todoData.id}`,
+            [CONSTANTS.TODO_TYPE.INBOX]: `/inbox/${todoData.id}`,
+            [CONSTANTS.TODO_TYPE.COMPLETED]: `/`,
+            [CONSTANTS.TODO_TYPE.DELETED]: `/`,
+        }[type];
 
-    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} type is ${CONSTANTS.TODO_TYPE.INBOX}`, async () => {
-        // Code to check UI elements for DELETE mode
-        render(<AddTodoFields todo={todoData} type={CONSTANTS.TODO_TYPE.INBOX} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
-        const submitButton = screen.getByRole('button', { name: 'Restore' });
-        await userEvent.click(submitButton);
-        expect(navigateMock).toHaveBeenCalled();
-        expect(navigateMock).toHaveBeenCalledWith(`/inbox/${todoData.id}`);
-    });
-
-    test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} type is ${CONSTANTS.TODO_TYPE.COMPLETED}`, async () => {
-        // Code to check UI elements for DELETE mode
-        render(<AddTodoFields todo={todoData} type={CONSTANTS.TODO_TYPE.COMPLETED} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
-        const submitButton = screen.getByRole('button', { name: 'Restore' });
-        await userEvent.click(submitButton);
-        expect(navigateMock).toHaveBeenCalled();
-        expect(navigateMock).toHaveBeenCalledWith(`/`);
-    });
+        test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} type is ${type}`, async () => {
+            // Code to check UI elements for DELETE mode
+            render(<AddTodoFields todo={todoData} type={type} mode={CONSTANTS.EDIT_MODE.DELETE}></AddTodoFields>)
+            const submitButton = screen.getByRole('button', { name: 'Restore' });
+            await userEvent.click(submitButton);
+            expect(navigateMock).toHaveBeenCalled();
+            expect(navigateMock).toHaveBeenCalledWith(navigateLink);
+        });
+    }
 
     test(`Edit mode is ${CONSTANTS.EDIT_MODE.DELETE} `, async () => {
         // Code to check UI elements for DELETE mode

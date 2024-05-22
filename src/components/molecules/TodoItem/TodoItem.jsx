@@ -11,6 +11,7 @@ import { faXmark, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import CONSTANTS from "../../../models/utils/CONSTANTS";
+import mapType from "../../../models/utils/mapType";
 export default function TodoItem({todo, type}) {
     const {alterCompleteStatus} = useTodos();
     const {modifySpoons} = useSpoonContext();
@@ -18,30 +19,7 @@ export default function TodoItem({todo, type}) {
     const navigate = useNavigate();
     let btn;
 
-    function mapType(type) {
-        let editMode;
-        switch(type) {
-            case CONSTANTS.TODO_TYPE.COMPLETED: {
-                editMode = CONSTANTS.EDIT_MODE.UPDATE;
-                break;
-            }
-            case CONSTANTS.TODO_TYPE.DELETED: {
-                editMode = CONSTANTS.EDIT_MODE.DELETE;
-                break;
-            }
-            case CONSTANTS.TODO_TYPE.INBOX: {
-                editMode = CONSTANTS.EDIT_MODE.UPDATE;
-                break;
-            }
-            case CONSTANTS.TODO_TYPE.TODAY: {
-                editMode = CONSTANTS.EDIT_MODE.UPDATE;
-                break;
-            }
-        }
-        return editMode;
-    }
-
-    function gotoTodo(e) {
+    const gotoTodo = (e) => {
         e.stopPropagation();
         navigate(`/todos/${todo.id}?page=${mapType(type)}&type=${type}`);
     }
@@ -59,43 +37,51 @@ export default function TodoItem({todo, type}) {
         }
     }
 
-    if(type == CONSTANTS.TODO_TYPE.TODAY || type == CONSTANTS.TODO_TYPE.INBOX) {
-        btn = <Checkbox 
-        value={false} 
-        onClick={(e) => buttonAction(e, type)}
-        className="mark-complete"></Checkbox>
-    } else if (type == CONSTANTS.TODO_TYPE.DELETED) {
+    if(type == CONSTANTS.TODO_TYPE.TODAY || type == CONSTANTS.TODO_TYPE.INBOX || type == CONSTANTS.TODO_TYPE.COMPLETED) {
+        let ariaText;
+
+        if(type == CONSTANTS.TODO_TYPE.TODAY || type == CONSTANTS.TODO_TYPE.INBOX) {
+            ariaText = 'Mark the todo as complete';
+        } else if(type == CONSTANTS.TODO_TYPE.COMPLETED) {
+            ariaText = 'Mark the todo as uncomplete.';
+        } else {
+            ariaText = 'This button does nothing.';
+        }
+
         btn = <IconToggler
-        small={true}
-        square={true}
-        className="mark-complete">
-            <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
-        </IconToggler>
-    } else if (type == CONSTANTS.TODO_TYPE.COMPLETED) {
-        btn = <IconToggler
+        data-testid="check"
+        aria-label={ariaText}
         onClick={(e) => buttonAction(e, type)}
         small={true}
         square={true}
         className="mark-complete">
             <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
         </IconToggler>
+    } else if (type == CONSTANTS.TODO_TYPE.DELETED) {
+        btn = <IconToggler
+        data-testid="xmark"
+        small={true}
+        square={true}
+        className="mark-complete">
+            <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+        </IconToggler>
     } else {
         btn = null;
     }
 
-    return <div className="todo-item" data-testid="todo-item" onClick={gotoTodo}>
+    return <div className="todo-item" data-testid="todo-item" aria-label="Displays all todo data on the screen" role="button" tabIndex="0" onClick={gotoTodo}>
         {btn}
         <p className="todo-text">{todo.text}</p>
         <div className="todo-meta">
             <div className="spoons-cost">
-                {todo.replenish ? <span className="replenish-indicator">+</span> : ''}
+                {todo.replenish ? <span data-testid="Replenish" aria-label="Replenishes Spoons" className="replenish-indicator">+</span> : ''}
                 {todo.cost > 3 
-                ? <><Spoon></Spoon><sup>{todo.cost}x</sup></> : 
-                [...Array(todo.cost).keys()].map(spoons => <Spoon key={spoons}></Spoon>)}
+                ? <span data-testid="greater-than-3"><Spoon></Spoon><sup>{todo.cost}x</sup></span> : 
+                [...Array(todo.cost).keys()].map(spoons => <Spoon data-testid="spoon" key={spoons}></Spoon>)}
             </div>
             <span className="divider">•</span>
             <p className="date">{dayjs(todo.date * 1000).format('MMM D, YYYY h:mm A')}</p>
-            {todo.repeat ? <FontAwesomeIcon icon={faRepeat}></FontAwesomeIcon> : ''}
+            {todo.repeat ? <FontAwesomeIcon title="Repeats" data-testid="Repeats" icon={faRepeat}></FontAwesomeIcon> : ''}
         </div>
     </div>
 }

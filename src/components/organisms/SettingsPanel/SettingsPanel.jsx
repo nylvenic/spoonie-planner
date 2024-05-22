@@ -2,7 +2,6 @@ import { faSpoon,
     faIdBadge,
     faPen,
     faLock,
-    faRobot,
     faBell,
     faClockRotateLeft,
     faRightFromBracket,
@@ -30,9 +29,8 @@ export default function SettingsPanel({type, className='', ...props}) {
         </Page>;
     } else if (type == 'app') {
         settings = <Page title="App Settings">
-            <MenuItem icon={faRobot} decoration={true}>Auto Reminders</MenuItem>
             <MenuItem icon={faSpoon} decoration={true}>Change Max Spoons</MenuItem>
-            <MenuItem icon={faBell} decoration={true}>Reminder</MenuItem>
+            <MenuItem icon={faBell} decoration={true}>Browser Reminder</MenuItem>
             <MenuItem icon={faClockRotateLeft} decoration={true}>Spoon Carry-Over</MenuItem>
         </Page>
     } else if (type == 'others') {

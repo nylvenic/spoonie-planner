@@ -31,8 +31,12 @@ vi.mock('../../../contexts/TodoContext', async (original) => {
     }
 });
 
-describe('TaskList tests', () => {
+describe('Empty tasklist tests', () => {
     beforeEach(() => {
+        todos = [];
+        deleted = [];
+        completed = [];
+        today = [];
         // Reset mock functions before each test
         mockFetchTodos.mockClear();
         mockFetchCompleted.mockClear();
@@ -41,68 +45,79 @@ describe('TaskList tests', () => {
     });
 
     afterEach(() => {
-        // Reset test data arrays to avoid test leakage
+        vi.restoreAllMocks();
+    });
+
+    for(const type in CONSTANTS.TODO_TYPE) {
+        const msg = {
+            [CONSTANTS.TODO_TYPE.INBOX]: 'No tasks yet, feel free to create some.',
+            [CONSTANTS.TODO_TYPE.TODAY]: 'No tasks today.',
+            [CONSTANTS.TODO_TYPE.COMPLETED]: 'Nothing completed yet.',
+            [CONSTANTS.TODO_TYPE.DELETED]: 'No deleted tasks.'
+        }[type];
+
+        test(`Empty state for ${type}`, () => {
+            render(<TaskList type={type} />)
+            const message = screen.getByText(msg);
+            expect(message).toBeInTheDocument();
+        });
+    }
+});
+
+describe('Populated tasklist tests', () => {
+    todos = mockTodos.slice(0,1);
+    deleted = mockTodos.slice(0,2);
+    completed = mockTodos.slice(0,3);
+    today = mockTodos.slice(0,4);
+    
+    beforeEach(() => {
+        todos = mockTodos.slice(0,1);
+        deleted = mockTodos.slice(0,2);
+        completed = mockTodos.slice(0,3);
+        today = mockTodos.slice(0,4);
+    });
+
+    afterEach(() => {
         todos = [];
         deleted = [];
         completed = [];
         today = [];
+        vi.restoreAllMocks();
     });
 
-    test(`Type is ${CONSTANTS.TODO_TYPE.COMPLETED}`, () => {
-        completed = mockTodos.slice(0,3);
-        render(<TaskList type={CONSTANTS.TODO_TYPE.COMPLETED}></TaskList>)
-        const heading = screen.getByRole('heading', {level: 2});
-        const todoItems = screen.getAllByTestId('todo-item');
-        expect(todoItems.length).toBe(completed.length);
-        expect(heading.textContent).toBe('Completed Tasks');
-        expect(mockFetchCompleted).toHaveBeenCalled();
-    });
-    test(`Type is ${CONSTANTS.TODO_TYPE.INBOX}`, () => {
-        todos = mockTodos.slice(0,1);
-        render(<TaskList type={CONSTANTS.TODO_TYPE.INBOX}></TaskList>)
-        const heading = screen.getByRole('heading', {level: 2})
-        const todoItems = screen.getAllByTestId('todo-item');
-        expect(todoItems.length).toBe(todos.length);
-        expect(heading.textContent).toBe('All Tasks');
-        expect(mockFetchTodos).toHaveBeenCalled();
-    });
-    test(`Type is ${CONSTANTS.TODO_TYPE.DELETED}`, () => {
-        deleted = mockTodos.slice(0,2);
-        render(<TaskList type={CONSTANTS.TODO_TYPE.DELETED}></TaskList>)
-        const heading = screen.getByRole('heading', {level: 2})
-        const todoItems = screen.getAllByTestId('todo-item');
-        expect(todoItems.length).toBe(deleted.length);
-        expect(heading.textContent).toBe('Deleted Tasks');
-        expect(mockFetchDeleted).toHaveBeenCalled();
-    });
-    test(`Type is ${CONSTANTS.TODO_TYPE.TODAY}`, () => {
-        today = mockTodos.slice(0,4);
-        render(<TaskList type={CONSTANTS.TODO_TYPE.TODAY}></TaskList>)
-        const heading = screen.getByRole('heading', {level: 2})
-        const todoItems = screen.getAllByTestId('todo-item');
-        expect(todoItems.length).toBe(today.length);
-        expect(heading.textContent).toBe('Today\'s Tasks');
-        expect(mockFetchToday).toHaveBeenCalled();
-    });
-    test(`Empty state for ${CONSTANTS.TODO_TYPE.COMPLETED}`, () => {
-        render(<TaskList type={CONSTANTS.TODO_TYPE.COMPLETED} />)
-        const message = screen.getByText('Nothing completed yet.');
-        expect(message).toBeInTheDocument();
-    });
-    test(`Empty state for ${CONSTANTS.TODO_TYPE.INBOX}`, () => {
-        render(<TaskList type={CONSTANTS.TODO_TYPE.INBOX} />)
-        const message = screen.getByText('No tasks yet, feel free to create some.');
-        expect(message).toBeInTheDocument();
-    });
-    test(`Empty state for ${CONSTANTS.TODO_TYPE.DELETED}`, () => {
-        render(<TaskList type={CONSTANTS.TODO_TYPE.DELETED} />)
-        const message = screen.getByText('No deleted tasks.');
-        expect(message).toBeInTheDocument();
-    });
-    test(`Empty state for ${CONSTANTS.TODO_TYPE.TODAY}`, () => {
-        render(<TaskList type={CONSTANTS.TODO_TYPE.TODAY} />)
-        const message = screen.getByText('No tasks today.');
-        expect(message).toBeInTheDocument();
-    });
-    
-});
+    for(const type in CONSTANTS.TODO_TYPE) {
+        const title = {
+            [CONSTANTS.TODO_TYPE.INBOX]: 'All Tasks',
+            [CONSTANTS.TODO_TYPE.COMPLETED]: 'Completed Tasks',
+            [CONSTANTS.TODO_TYPE.DELETED]: 'Deleted Tasks',
+            [CONSTANTS.TODO_TYPE.TODAY]: "Today's Tasks"
+        }[type];
+
+        const src = {
+            [CONSTANTS.TODO_TYPE.INBOX]: todos,
+            [CONSTANTS.TODO_TYPE.COMPLETED]: completed,
+            [CONSTANTS.TODO_TYPE.DELETED]: deleted,
+            [CONSTANTS.TODO_TYPE.TODAY]: today
+        }[type];
+
+        console.log(src);
+
+        const toCall = {
+            [CONSTANTS.TODO_TYPE.INBOX]: mockFetchTodos,
+            [CONSTANTS.TODO_TYPE.COMPLETED]: mockFetchCompleted,
+            [CONSTANTS.TODO_TYPE.DELETED]: mockFetchDeleted,
+            [CONSTANTS.TODO_TYPE.TODAY]: mockFetchToday
+        }[type];
+
+        test(`Type is ${type}`, () => {
+            render(<TaskList type={type}></TaskList>)
+            const heading = screen.getByRole('heading', {level: 2});
+            const todoItems = screen.getAllByTestId('todo-item');
+            console.log(todoItems.length);
+            console.log(src.length);
+            expect(todoItems.length).toBe(src.length);
+            expect(heading.textContent).toBe(title);
+            expect(toCall).toHaveBeenCalled();
+        });
+    }
+})
