@@ -1,13 +1,6 @@
-import TodoList from "./TodoList";
 import CONSTANTS from "../utils/CONSTANTS";
 import Cookies from "js-cookie";
 class TodoListManager {
-    constructor() {
-        this.todos = new TodoList();
-        this.deleted = new TodoList();
-        this.completed = new TodoList();
-    }
-
     async alterCompleteStatus({id, newStatus}) {
         const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/complete`, {
             method: 'PUT',

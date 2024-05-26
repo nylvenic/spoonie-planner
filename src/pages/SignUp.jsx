@@ -2,12 +2,12 @@ import CustomButton from '../components/atoms/CustomButton/CustomButton';
 import FormContainer from '../components/atoms/FormContainer/FormContainer';
 import GapWrapper from '../components/atoms/GapWrapper/GapWrapper';
 import BackgroundWrapper from '../components/atoms/BackgroundWrapper/BackgroundWrapper';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import Integrations from '../components/molecules/Integrations/Integrations';
 import CustomText from '../components/atoms/CustomText/CustomText';
 import { useState } from 'react';
-import CONSTANTS from '../models/utils/CONSTANTS';
+import User from '../models/User/UserManager';
 import MessageBox from '../components/molecules/MessageBox/MessageBox';
 export default function SignUp() {
     const [username, setUsername] = useState('');
@@ -19,9 +19,14 @@ export default function SignUp() {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [signUpMsg, setSignUpMsg] = useState(null);
+    const navigate = useNavigate();
 
     async function onSubmitHandler(e) {
         e.preventDefault();
+        setUsernameError(false);
+        setPasswordError(false);
+        setPasswordMatch(true);
+        setEmailError(false);
         if(!username) {
             setUsernameError(true);
         }
@@ -32,27 +37,19 @@ export default function SignUp() {
             setEmailError(true);
         }
         if(password == repeatPassword && repeatPassword) {
-            const response = await fetch(`${CONSTANTS.backend_url}/users/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username,
-                    password,
-                    email
-                })
-            });
-            const {msg, error} = await response.json();
+            const {msg, success} = await User.signup({username, password, email});
             if(msg) {
                 setSignUpMsg({
                     text: msg,
-                    error: false,
+                    error: !success,
                 })
-            } else if(error) {
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1500);
+            } else {
                 setSignUpMsg({
-                    text: error,
-                    error: true
+                    text: "Something went wrong.",
+                    error: true,
                 })
             }
         } else {

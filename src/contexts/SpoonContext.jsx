@@ -3,33 +3,19 @@ import { useState, createContext, useContext, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import CONSTANTS from "../models/utils/CONSTANTS";
 import Cookies from "js-cookie";
-
+import User from "../models/User/UserManager";
 const SpoonContext = createContext();
 
 export const SpoonContextProvider = ({ children, customSpoons=0, customMaxSpoons=0 }) => {
     const {userData} = useAuth();
-    const [spoons, setSpoons] = useState(customSpoons);
-    const [maxSpoons, setMaxSpoons] = useState(customMaxSpoons);
+    const [spoons, setSpoons] = useState(customSpoons || (userData ? userData.maxSpoons : 0));
+    const [maxSpoons, setMaxSpoons] = useState(customMaxSpoons || (userData ? userData.maxSpoons : 0));
+
     
     const modifySpoons = async ({cost, replenish, maxSpoons}) => {
-        console.log(userData);
         if(userData) {
-            const res = await fetch(`${CONSTANTS.backend_url}/users/${userData.userId}/spoons`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('jwt')}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        cost, 
-                        replenish, 
-                        maxSpoons
-                    })
-                }
-            );
-            const data = await res.json();
-            setSpoons(data.newSpoons);
+            const {newSpoons} = await User.changeSpoons({id: userData.userId, cost, replenish, maxSpoons})
+            setSpoons(newSpoons);
         }
     };
 
@@ -41,6 +27,7 @@ export const SpoonContextProvider = ({ children, customSpoons=0, customMaxSpoons
                 }
             });
             const json = (await data.json()).result;
+            console.log(json);
             setSpoons(json.current_spoons);
             setMaxSpoons(json.maxSpoons);
         }

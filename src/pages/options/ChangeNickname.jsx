@@ -1,20 +1,32 @@
 import CustomButton from "../../components/atoms/CustomButton/CustomButton";
 import { TextField } from "@mui/material";
-import Nav from "../../components/organisms/Nav/Nav";
-import SidePopup from "../../components/organisms/SidePopup/SidePopup";
-import FormContainer from "../../components/atoms/FormContainer/FormContainer";
-import BackgroundWrapper from "../../components/atoms/BackgroundWrapper/BackgroundWrapper";
 import CustomText from "../../components/atoms/CustomText/CustomText";
+import { useEffect, useState } from "react";
+import User from "../../models/User/UserManager";
+import FormWithMessageBoxWrapper from "../../components/organisms/FormWithMessageBoxWrapper/FormWithMessageBoxWrapper";
+import { useAuth } from "../../contexts/AuthContext";
 export default function ChangeNickname() {
-    return <>
-        <Nav inner={true}></Nav>
-        <BackgroundWrapper navPage={true} centerText={false} background={false}>
-            <FormContainer>
-                <CustomText ElementType="h1" size="lg">Change Nickname</CustomText>
-                <TextField label="Nickname">Enter your nickname</TextField>
-                <CustomButton>Change Nickname</CustomButton>
-            </FormContainer>
-        </BackgroundWrapper>
-        <SidePopup></SidePopup>
-    </>
+    const {userData, login} = useAuth();
+    const [nickname, setNickname] = useState('');
+
+    async function changeNickname() {
+        return await User.changeNickname({id: userData.userId, newNickname: nickname});
+    }
+
+    useEffect(() => {
+        setNickname(userData ? userData.nickname : '');
+    }, [userData])
+
+    return (
+        <FormWithMessageBoxWrapper login={login} cb={changeNickname}>
+            <CustomText ElementType="h1" size="lg">Change Nickname</CustomText>
+            <TextField 
+                label="Nickname" 
+                value={nickname} 
+                onChange={(e) => setNickname(e.target.value)}
+                placeholder="Enter your nickname"
+            />
+            <CustomButton type='submit'>Change Nickname</CustomButton>
+        </FormWithMessageBoxWrapper>
+    );
 }

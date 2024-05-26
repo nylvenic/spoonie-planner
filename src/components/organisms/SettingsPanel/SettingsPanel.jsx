@@ -30,13 +30,13 @@ export default function SettingsPanel({type, className='', ...props}) {
     } else if (type == 'app') {
         settings = <Page title="App Settings">
             <Link to="change-max-spoons"><MenuItem icon={faSpoon} decoration={true}>Change Max Spoons</MenuItem></Link>
-            <MenuItem icon={faBell} decoration={true}>Browser Reminder</MenuItem>
-            <MenuItem icon={faClockRotateLeft} decoration={true}>Spoon Carry-Over</MenuItem>
+            <Link to="change-browser-reminders"><MenuItem icon={faBell} decoration={true}>Browser Reminder</MenuItem></Link>
+            {/* <MenuItem icon={faClockRotateLeft} decoration={true}>Spoon Carry-Over</MenuItem> */}
         </Page>
     } else if (type == 'others') {
         settings = <Page title="Others">
-            <MenuItem icon={faShare} decoration={true}>Share</MenuItem>
-            <MenuItem icon={faCircleInfo} decoration={true}>About</MenuItem>
+            {/* <MenuItem icon={faShare} decoration={true}>Share</MenuItem> */}
+            {/* <MenuItem icon={faCircleInfo} decoration={true}>About</MenuItem> */}
             <MenuItem icon={faRightFromBracket} onClick={logOutHandler} decoration={true}>Sign Out</MenuItem>
         </Page>
     }

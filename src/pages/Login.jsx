@@ -8,8 +8,8 @@ import Integrations from '../components/molecules/Integrations/Integrations';
 import CustomText from '../components/atoms/CustomText/CustomText';
 import CONSTANTS from '../models/utils/CONSTANTS.js';
 import { useState } from 'react';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import User from '../models/User/UserManager.js';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import MessageBox from '../components/molecules/MessageBox/MessageBox.jsx';
 export default function Login() {
@@ -22,29 +22,19 @@ export default function Login() {
     const [loginMsg, setLoginMsg] = useState('');
 
     async function onSubmitHandler(e) {
+        setUsernameError(false);
+        setPasswordError(false);
         e.preventDefault();
         if(!username) {
             setUsernameError(true);
             return;
         };
-        if(!password) {
-            setPasswordError(true)
-            return;
-        };
-        const response = await fetch(`${CONSTANTS.backend_url}/users/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username,
-                password,
-            })
-        });
-        const {token, msg, error} = await response.json();
-        if(!token || error) {
-            setLoginMsg(msg || error);
-        }
+        // if(!password) {
+        //     setPasswordError(true)
+        //     return;
+        // };
+        const {token, msg, success} = await User.login({username, password});
+        setLoginMsg(msg);
         
         if(token) {
             auth.login(token);

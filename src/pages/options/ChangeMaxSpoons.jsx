@@ -1,23 +1,27 @@
 import CustomButton from "../../components/atoms/CustomButton/CustomButton";
 import { TextField } from "@mui/material";
-import Nav from "../../components/organisms/Nav/Nav";
-import SidePopup from "../../components/organisms/SidePopup/SidePopup";
-import FormContainer from "../../components/atoms/FormContainer/FormContainer";
-import BackgroundWrapper from "../../components/atoms/BackgroundWrapper/BackgroundWrapper";
+import User from "../../models/User/UserManager";
 import CustomText from "../../components/atoms/CustomText/CustomText";
+import FormWithMessageBoxWrapper from "../../components/organisms/FormWithMessageBoxWrapper/FormWithMessageBoxWrapper";
+import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 export default function ChangeMaxSpoons() {
-    const {userData} = useAuth();
-    return <>
-        <Nav inner={true}></Nav>
-        <BackgroundWrapper navPage={true} centerText={false} background={false}>
-            <FormContainer>
-                <CustomText ElementType="h1" size="lg">Change Max Spoons</CustomText>
-                <CustomText>Current Max Spoons: {userData.maxSpoons}</CustomText>
-                <TextField type="number" label="New Max Spoons">Enter New Value</TextField>
-                <CustomButton>Change Max Spoons</CustomButton>
-            </FormContainer>
-        </BackgroundWrapper>
-        <SidePopup></SidePopup>
-    </>
+    const {login, userData} = useAuth();
+    const [newMaxSpoons, setNewMaxSpoons]= useState(userData.maxSpoons);
+    async function changeMaxSpoons() {
+        return await User.changeMaxSpoons({id: userData.userId, newMaxSpoons}); 
+    }
+    
+    return <FormWithMessageBoxWrapper login={login} cb={changeMaxSpoons}>
+            <CustomText ElementType="h1" size="lg">Change Max Spoons</CustomText>
+            <CustomText>Current Max Spoons: {userData.maxSpoons}</CustomText>
+            <TextField 
+            value={newMaxSpoons} 
+            onChange={(e) => setNewMaxSpoons(e.target.value)} 
+            type="number" 
+            label="New Max Spoons">
+                Enter New Value
+            </TextField>
+            <CustomButton type="submit">Change Max Spoons</CustomButton>
+        </FormWithMessageBoxWrapper>
 }

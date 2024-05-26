@@ -8,6 +8,8 @@ import { useAuth } from '../../../contexts/AuthContext.jsx';
 export default function SpoonMeter() {
     const {userData} = useAuth();
     const {spoons, maxSpoons, modifySpoons} = useSpoonContext();
+    const spoonElements = [...Array(Number(maxSpoons)).keys()]; // maxSpoons is 16, if i manually enter the value i get 16, otherwise i get an arary with 1 item why?
+    
     useEffect(() => {
         async function isResetNecessary() {
             const lastVisited = localStorage.getItem('lastVisited');
@@ -25,7 +27,7 @@ export default function SpoonMeter() {
     return <Container>
         <div className="meter">
             <div className="point-wrapper">
-                {[...Array(maxSpoons).keys()].map((num, index) => 
+                {spoonElements.map((num, index) => 
                 <span key={num} 
                 data-testid={index > spoons-1 ? 
                     CONSTANTS.ids.SpoonMeterUsed 

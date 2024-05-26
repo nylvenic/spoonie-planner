@@ -17,6 +17,7 @@ import {
 } from "react-router-dom";
 import ChangeAvatar from "./pages/options/ChangeAvatar.jsx";
 import ChangeMaxSpoons from "./pages/options/ChangeMaxSpoons.jsx";
+import BrowserReminder from "./pages/options/BrowserReminder.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
     element: (
       <Deleted></Deleted>
     ),
+  },
+  {
+    path: "/settings/change-browser-reminders", // Nested path
+    element: <BrowserReminder />
   },
   {
     path: "/settings/change-max-spoons", // Nested path

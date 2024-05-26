@@ -27,7 +27,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
         if (todo) {
             setTodoName(todo.text || '');
             setDescription(todo.description || '');
-            setDate(new Date((todo.date) || new Date()));
+            setDate(new Date((todo.date * 1000) || new Date()));
             setCost(todo.cost || 1);
             setRepeat(!!todo.repeat_task);
             setReplenish(!!todo.replenish);
