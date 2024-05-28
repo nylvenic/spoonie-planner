@@ -15,11 +15,11 @@ export default function BrowserReminder() {
     
     useEffect(() => {
         const { reminderDay1 = false, reminderHour1 = false, reminderMin5 = false, reminderMin30 = false, reminderOnTime = false } = userData || {};
-        setReminderDay1State(reminderDay1);
-        setReminderHour1State(reminderHour1);
-        setReminderMin5State(reminderMin5);
-        setReminderMin30State(reminderMin30);
-        setReminderOnTimeState(reminderOnTime);
+        setReminderDay1State(!!reminderDay1);
+        setReminderHour1State(!!reminderHour1);
+        setReminderMin5State(!!reminderMin5);
+        setReminderMin30State(!!reminderMin30);
+        setReminderOnTimeState(!!reminderOnTime);
     }, [userData])
 
     async function changeReminders() {
@@ -33,8 +33,8 @@ export default function BrowserReminder() {
         return await User.changeReminders({id:userData.userId, reminders});
     }
 
-    return <FormWithMessageBoxWrapper cb={changeReminders} login={login}>
-        <CustomText ElementType="h1" size="lg">Browser Reminders</CustomText>
+    const header = <CustomText ElementType="h1" size="lg">Browser Reminders</CustomText>
+    return <FormWithMessageBoxWrapper cb={changeReminders} login={login} header={header}>
         <FormControlLabel
             className="toggler-color"
             control={

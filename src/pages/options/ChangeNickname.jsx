@@ -17,9 +17,9 @@ export default function ChangeNickname() {
         setNickname(userData ? userData.nickname : '');
     }, [userData])
 
+    const header = <CustomText ElementType="h1" size="lg">Change Nickname</CustomText>;
     return (
-        <FormWithMessageBoxWrapper login={login} cb={changeNickname}>
-            <CustomText ElementType="h1" size="lg">Change Nickname</CustomText>
+        <FormWithMessageBoxWrapper login={login} cb={changeNickname} header={header}>
             <TextField 
                 label="Nickname" 
                 value={nickname} 

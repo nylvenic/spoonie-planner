@@ -1,6 +1,9 @@
 export default {
     backend_url: "http://localhost:3000",
     msgBoxTimer: 3000,
+    redirectTimer: 2000,
+    notificationTimer: 30000,
+    notificationLeeway: 30000 * 2,
     EDIT_MODE: {
         UPDATE: 'UPDATE',
         CREATE: 'CREATE',

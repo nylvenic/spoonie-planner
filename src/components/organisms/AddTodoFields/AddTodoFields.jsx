@@ -55,13 +55,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
                 await todos.update({data: todoData, id: todo.id});
             } else if (mode === CONSTANTS.EDIT_MODE.DELETE) {
                 await todos.alterDeletedStatus({id:todo.id, newStatus: false});
-                if(type == CONSTANTS.TODO_TYPE.TODAY) {
-                    navigate(`/today/${todo.id}`);
-                } else if (type == CONSTANTS.TODO_TYPE.INBOX) {
-                    navigate(`/inbox/${todo.id}`);
-                } else {
-                    navigate(`/`);
-                }
+                navigate(`/deleted`);
             } else {
                 console.error('Invalid mode: Please use CONSTANTS.');
             }
@@ -79,7 +73,15 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
     async function handleTrashClick(e) {
         e.preventDefault();
         await todos.alterDeletedStatus({id:todo.id, newStatus: true});
-        navigate('/');
+        if(type == CONSTANTS.TODO_TYPE.TODAY) {
+            navigate(`/today`);
+        } else if (type == CONSTANTS.TODO_TYPE.INBOX) {
+            navigate(`/inbox`);
+        } else if (type == CONSTANTS.TODO_TYPE.COMPLETED) {
+            navigate(`/completed`);
+        } else {
+            navigate(`/`);
+        }
     }
 
     return (
@@ -137,7 +139,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
                 </>
             )} 
             <div className="controls">
-                {(mode === CONSTANTS.EDIT_MODE.UPDATE) ? 
+                {(mode === CONSTANTS.EDIT_MODE.UPDATE && type !== CONSTANTS.TODO_TYPE.COMPLETED) ? 
                 <CustomButton aria-label="Delete Button" fullWidth={false} variant='contained' color="danger" onClick={handleTrashClick}> 
                     <FontAwesomeIcon size="lg" icon={faTrash}></FontAwesomeIcon>
                 </CustomButton> : ''}

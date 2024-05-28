@@ -16,8 +16,8 @@ export default function ChangePassword() {
         }
     }
 
-    return <FormWithMessageBoxWrapper cb={changePassword}>
-        <CustomText ElementType="h1" size="lg">Change Password</CustomText>
+    const header = <CustomText ElementType="h1" size="lg">Change Password</CustomText>;
+    return <FormWithMessageBoxWrapper cb={changePassword} header={header}>
         <input
         label="Username"
         value={userData ? userData.username : ''}
@@ -36,7 +36,7 @@ export default function ChangePassword() {
         autoComplete='new-password'
         helperText="Please enter a new password."
         value={newPassword}
-        onChange={(e) => setNewPassword(newPassword)}
+        onChange={(e) => setNewPassword(e.target.value)}
         type="password"></TextField>
         <TextField
         label="Repeat
@@ -45,6 +45,7 @@ export default function ChangePassword() {
         value={repeatNewPassword}
         onChange={(e) => setRepeatNewPassword(e.target.value)}
         helperText="Ensure both passwords match."
+        error={newPassword !== repeatNewPassword}
         type="password"></TextField>
         <CustomButton type="submit">Change Password</CustomButton>
     </FormWithMessageBoxWrapper>

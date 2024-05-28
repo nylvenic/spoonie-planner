@@ -14,6 +14,9 @@ body {
 #root {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 * {
@@ -45,6 +48,7 @@ body {
   --icon-height: 42px;
   --icon-width: 42px;
   --default-index: 1200;
+  --max-width: 1280px;
   --meter-spacing: calc(var(--base-spacing)/2) var(--base-spacing);
   --base-padding: var(--base-spacing) calc(var(--base-spacing) * 2);
 }

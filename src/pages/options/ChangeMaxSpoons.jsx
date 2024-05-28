@@ -12,9 +12,11 @@ export default function ChangeMaxSpoons() {
         return await User.changeMaxSpoons({id: userData.userId, newMaxSpoons}); 
     }
     
-    return <FormWithMessageBoxWrapper login={login} cb={changeMaxSpoons}>
-            <CustomText ElementType="h1" size="lg">Change Max Spoons</CustomText>
-            <CustomText>Current Max Spoons: {userData.maxSpoons}</CustomText>
+    const header = <>
+        <CustomText ElementType="h1" size="lg">Change Max Spoons</CustomText>
+        <CustomText>Current Max Spoons: {userData.maxSpoons}</CustomText>
+    </>
+    return <FormWithMessageBoxWrapper login={login} cb={changeMaxSpoons} header={header}>
             <TextField 
             value={newMaxSpoons} 
             onChange={(e) => setNewMaxSpoons(e.target.value)} 

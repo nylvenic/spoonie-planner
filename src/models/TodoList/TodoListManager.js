@@ -79,6 +79,19 @@ class TodoListManager {
         return response;
     }
 
+    async setRemindedState({id, reminders}) {
+        console.log('SET REMINDED STATE', reminders);
+        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/set-reminded-state`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${Cookies.get('jwt')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({reminders})
+        });
+        return response;
+    }
+
     async updateTodo({data, id}) {
         const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
             method: 'PUT',

@@ -1,5 +1,6 @@
 .container {
     width: 100%;
+    max-width: var(--max-width);
     display: flex;
     justify-content: center;
     margin: var(--base-spacing) 0 var(--base-spacing) 0;

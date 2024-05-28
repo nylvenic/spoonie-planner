@@ -40,5 +40,5 @@ export default function SettingsPanel({type, className='', ...props}) {
             <MenuItem icon={faRightFromBracket} onClick={logOutHandler} decoration={true}>Sign Out</MenuItem>
         </Page>
     }
-    return settings ? <div className={`settings-panel ${className}`} {...props}>{settings}</div> : null;
+    return settings ? settings : null;
 }

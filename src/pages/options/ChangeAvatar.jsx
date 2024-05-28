@@ -41,8 +41,8 @@ export default function ChangeAvatar() {
         return await User.changeAvatar({id:userData.userId, file})
     }
 
-    return (<FormWithMessageBoxWrapper cb={changeAvatar} login={login}>
-        <CustomText ElementType="h1" size="lg">Change Avatar</CustomText>
+    const header = <CustomText ElementType="h1" size="lg">Change Avatar</CustomText>
+    return (<FormWithMessageBoxWrapper cb={changeAvatar} login={login} header={header}>
         {imageUrl && <img src={imageUrl} alt="Uploaded Avatar" style={{ objectFit: 'cover',
          alignSelf: 'center',
          height: '250px',
