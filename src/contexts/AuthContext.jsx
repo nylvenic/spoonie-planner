@@ -1,6 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import User from '../models/User/UserManager.js';
 
 const AuthContext = createContext();
 

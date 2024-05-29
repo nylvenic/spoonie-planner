@@ -38,7 +38,7 @@ export default function ChangeAvatar() {
     }, [imageUrl]);
 
     async function changeAvatar() {
-        return await User.changeAvatar({id:userData.userId, file})
+        return await User.changeAvatar({id:userData.userId, file, previousAvatar: userData.avatar});
     }
 
     const header = <CustomText ElementType="h1" size="lg">Change Avatar</CustomText>

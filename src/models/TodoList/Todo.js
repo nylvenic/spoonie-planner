@@ -16,7 +16,10 @@ export default class Todo {
     validate({text, date, cost, repeat, completed, replenish}) {
         const errors = [];
         if(!text) errors.push(new Error('Cannot create todo, you must add text.'));
-        if(date instanceof Date == false) errors.push(new Error('Please provide a valid date.'));
+        if (typeof date !== 'number' || isNaN(date) || date < 0 || !Number.isInteger(date)) {
+            errors.push(new Error('Please provide a valid Unix timestamp.'));
+        }
+
         if(isNaN(cost) || cost == 0) errors.push(new Error('You must provide a number for the cost!'));
         if(typeof repeat != 'boolean') errors.push(new Error('Repeat must be of type boolean.'));
         if(typeof completed != 'boolean') errors.push(new Error('Completed must be of type boolean.'));

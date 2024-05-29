@@ -45,7 +45,16 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const todoData = { text: todoName, date, cost, repeat, replenish, description };
+        // Convert date to UNIX timestamp (in seconds)
+        const unix = dayjs(date).unix();
+        const todoData = {
+            text: todoName,
+            date: unix,  // Use the timestamp instead of the Date object
+            cost,
+            repeat,
+            replenish,
+            description
+        };
 
         try {
             if (mode === CONSTANTS.EDIT_MODE.CREATE) {
@@ -97,7 +106,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MobileDateTimePicker
                     value={dayjs(date)}
-                    onChange={(e) => setDate(new Date(e.$d))}
+                    onChange={(newValue) => setDate(new Date(newValue.$d))}  // Ensure this sets the Date object correctly
                     label="Date select"
                 />
             </LocalizationProvider>

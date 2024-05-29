@@ -117,9 +117,38 @@ class User {
         return data;
     }
 
-    static async changeAvatar({id, file}) {
+    static async getLastVisited({id}) {
+        const data = await fetch(`${CONSTANTS.backend_url}/users/${id}/last-visited`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('jwt')}`
+            }
+        });
+        const json = await data.json();
+        return json;
+    }
+
+    static async changeLastVisited({id, newDate}) {
+        const res = await fetch(`${CONSTANTS.backend_url}/users/${id}/last-visited`,
+            {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('jwt')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newDate
+                })
+            }
+        );
+        const data = await res.json();
+        return data;
+    }
+
+    static async changeAvatar({id, file, previousAvatar}) {
+        // previous is something like "/avatars/default.jpg"
         const formData = new FormData();
         formData.append('file', file); // 'avatar' is the field name you'll access on the server
+        formData.append('previousAvatar', previousAvatar);
         const res = await fetch(`${CONSTANTS.backend_url}/users/${id}/avatar`, {
             method: 'PUT',
             headers: {

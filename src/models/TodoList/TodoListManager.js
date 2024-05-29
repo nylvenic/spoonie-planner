@@ -1,8 +1,8 @@
 import CONSTANTS from "../utils/CONSTANTS";
 import Cookies from "js-cookie";
 class TodoListManager {
-    async alterCompleteStatus({id, newStatus}) {
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/complete`, {
+    async alterCompleteStatus({userId, id, newStatus}) {
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}/complete`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${Cookies.get('jwt')}`,
@@ -15,8 +15,8 @@ class TodoListManager {
         return response;
     }
 
-    async alterDeletedStatus({id, newStatus}) {
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/markForDeletion`, {
+    async alterDeletedStatus({id, newStatus, userId}) {
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}/markForDeletion`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${Cookies.get('jwt')}`,
@@ -29,8 +29,9 @@ class TodoListManager {
         return response;
     }
 
-    async getById(id) {
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
+    async getById({id, userId}) { // changed the parameters
+        console.log(userId);
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('jwt')}`
             }
@@ -38,8 +39,8 @@ class TodoListManager {
         return response;
     }
 
-    async deleteTodo(id) {
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
+    async deleteTodo({id, userId}) { // changed the parameters format
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${Cookies.get('jwt')}`
@@ -48,7 +49,7 @@ class TodoListManager {
         return response;
     }
 
-    async getAll(status) {
+    async getAll({status, userId}) { // changed the parameters format
         let statusString='';
         if(status == 'deleted') {
             statusString = '?status=deleted';
@@ -58,7 +59,7 @@ class TodoListManager {
             statusString = '?status=today';
         }
 
-        const response = await fetch(`${CONSTANTS.backend_url}/todos${statusString}`, {
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos${statusString}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('jwt')}`
             }
@@ -67,8 +68,9 @@ class TodoListManager {
         return todos;
     }
 
-    async createTodo(todo) {
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/create`, {
+    async createTodo({todo, userId}) { // changed the parameters format
+        console.log('TODO IN CREATE', todo);
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/create`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${Cookies.get('jwt')}`,
@@ -79,9 +81,9 @@ class TodoListManager {
         return response;
     }
 
-    async setRemindedState({id, reminders}) {
+    async setRemindedState({id, reminders, userId}) {
         console.log('SET REMINDED STATE', reminders);
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}/set-reminded-state`, {
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}/set-reminded-state`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${Cookies.get('jwt')}`,
@@ -92,8 +94,8 @@ class TodoListManager {
         return response;
     }
 
-    async updateTodo({data, id}) {
-        const response = await fetch(`${CONSTANTS.backend_url}/todos/${id}`, {
+    async updateTodo({data, id, userId}) {
+        const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${Cookies.get('jwt')}`,
