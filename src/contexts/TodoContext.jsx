@@ -53,10 +53,11 @@ export const TodoProvider = ({ children }) => {
 
     const alterCompleteStatus = useCallback(async ({ id, newStatus }) => {
         if(userData) {
-            await todoManager.alterCompleteStatus({ id, newStatus, userId: userData.userId });
+            const {success, msg} = await todoManager.alterCompleteStatus({ id, newStatus, userId: userData.userId });
             await fetchTodos();
             await fetchToday();
             await fetchCompleted();
+            return {success, msg};
         }
     }, [fetchTodos, fetchCompleted, fetchToday, userData]);
 
@@ -92,8 +93,9 @@ export const TodoProvider = ({ children }) => {
     const update = useCallback(async ({ data, id }) => {
         if(userData) {
             const todo = new Todo(data);
-            await todoManager.updateTodo({ data: todo, id, userId: userData.userId });
+            const {success, msg} = await todoManager.updateTodo({ data: todo, id, userId: userData.userId });
             await fetchTodos();
+            return {success, msg}
         }
     }, [fetchTodos, userData]);
 
@@ -110,7 +112,6 @@ export const TodoProvider = ({ children }) => {
                     reminderMin30: !!(userData.reminderMin30),
                     reminderOnTime: !!(userData.reminderOnTime),
                 }
-                console.log('ACCOUNT REMINDER', accountReminders);
     
                 const reminders = {
                     dayReminder1: !!todo['1_day_reminder'],

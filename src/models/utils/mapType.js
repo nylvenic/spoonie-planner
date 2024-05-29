@@ -3,7 +3,7 @@ export default function mapType(type) {
     let editMode;
     switch(type) {
         case CONSTANTS.TODO_TYPE.COMPLETED: {
-            editMode = CONSTANTS.EDIT_MODE.UPDATE;
+            editMode = CONSTANTS.EDIT_MODE.COMPLETE;
             break;
         }
         case CONSTANTS.TODO_TYPE.DELETED: {

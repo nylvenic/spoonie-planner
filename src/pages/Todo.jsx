@@ -17,8 +17,7 @@ export default function Todo() {
     
     async function fetchTodoData() {
         if(userData) {
-            const res = await todoManager.getById({id, userId: userData.userId});
-            const data = await res.json();
+            const data = await todoManager.getById({id, userId: userData.userId});
             setTodo(data.todo[0]);
         }
     }

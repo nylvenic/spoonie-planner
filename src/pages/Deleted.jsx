@@ -10,14 +10,12 @@ import CONSTANTS from "../models/utils/CONSTANTS.js";
 export default function Deleted() {
     return <>
     <Nav text="Deleted"></Nav>
-    <SpoonContextProvider>
-      <SpoonMeter></SpoonMeter>
-      <QuickAdd></QuickAdd>
-      <TodoProvider>
-        <TaskList type={CONSTANTS.TODO_TYPE.DELETED}></TaskList>
-        <QuickAddPopup></QuickAddPopup>
-      </TodoProvider>
-    </SpoonContextProvider>
+    <SpoonMeter></SpoonMeter>
+    <QuickAdd></QuickAdd>
+    <TodoProvider>
+      <TaskList type={CONSTANTS.TODO_TYPE.DELETED}></TaskList>
+      <QuickAddPopup></QuickAddPopup>
+    </TodoProvider>
     <SidePopup></SidePopup>
   </>;
 }

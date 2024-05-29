@@ -12,7 +12,8 @@ class TodoListManager {
                 newStatus
             })
         });
-        return response;
+        const json = await response.json();
+        return json;
     }
 
     async alterDeletedStatus({id, newStatus, userId}) {
@@ -26,17 +27,19 @@ class TodoListManager {
                 newStatus
             })
         });
-        return response;
+        const json = await response.json();
+        return json;
     }
 
     async getById({id, userId}) { // changed the parameters
-        console.log(userId);
         const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('jwt')}`
             }
         });
-        return response;
+
+        const json = await response.json();
+        return json;
     }
 
     async deleteTodo({id, userId}) { // changed the parameters format
@@ -46,7 +49,8 @@ class TodoListManager {
                 Authorization: `Bearer ${Cookies.get('jwt')}`
             }
         });
-        return response;
+        const json = await response.json();
+        return json;
     }
 
     async getAll({status, userId}) { // changed the parameters format
@@ -69,7 +73,6 @@ class TodoListManager {
     }
 
     async createTodo({todo, userId}) { // changed the parameters format
-        console.log('TODO IN CREATE', todo);
         const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/create`, {
             method: 'POST',
             headers: {
@@ -78,11 +81,11 @@ class TodoListManager {
             },
             body: JSON.stringify(todo)
         });
-        return response;
+        const json = await response.json();
+        return json;
     }
 
     async setRemindedState({id, reminders, userId}) {
-        console.log('SET REMINDED STATE', reminders);
         const response = await fetch(`${CONSTANTS.backend_url}/users/${userId}/todos/${id}/set-reminded-state`, {
             method: 'PUT',
             headers: {
@@ -91,7 +94,8 @@ class TodoListManager {
             },
             body: JSON.stringify({reminders})
         });
-        return response;
+        const json = await response.json();
+        return json;
     }
 
     async updateTodo({data, id, userId}) {
@@ -103,7 +107,8 @@ class TodoListManager {
             },
             body: JSON.stringify(data)
         });
-        return response;
+        const json = await response.json();
+        return json;
     }
 }
 

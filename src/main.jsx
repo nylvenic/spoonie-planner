@@ -6,6 +6,7 @@ import { AuthProvider } from './contexts/AuthContext.jsx'
 import { UIProvider } from './contexts/UIContext.jsx'
 import { TodoProvider } from './contexts/TodoContext.jsx'
 import { NotificationProvider } from './contexts/NotificationContext.jsx'
+import { SpoonContextProvider } from './contexts/SpoonContext.jsx'
 import './assets/fonts/Roboto-Regular.ttf';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <UIProvider>
           <NotificationProvider>
             <TodoProvider>
-              <App />
+              <SpoonContextProvider>
+                <App />
+              </SpoonContextProvider>
             </TodoProvider>
           </NotificationProvider>
         </UIProvider>

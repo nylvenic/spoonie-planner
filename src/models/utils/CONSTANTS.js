@@ -8,6 +8,7 @@ export default {
         UPDATE: 'UPDATE',
         CREATE: 'CREATE',
         DELETE: 'DELETE',
+        COMPLETE: 'COMPLETE',
     },
     TODO_TYPE: {
         COMPLETED: 'COMPLETED',

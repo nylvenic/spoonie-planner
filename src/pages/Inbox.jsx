@@ -9,12 +9,10 @@ import Nav from '../components/organisms/Nav/Nav.jsx';
 export default function Home() {
     return <>
     <Nav text="Inbox"></Nav>
-    <SpoonContextProvider>
-      <SpoonMeter></SpoonMeter>
-      <QuickAdd></QuickAdd>
-      <TaskList type={CONSTANTS.TODO_TYPE.INBOX}></TaskList>
-      <QuickAddPopup></QuickAddPopup>
-    </SpoonContextProvider>
+    <SpoonMeter></SpoonMeter>
+    <QuickAdd></QuickAdd>
+    <TaskList type={CONSTANTS.TODO_TYPE.INBOX}></TaskList>
+    <QuickAddPopup></QuickAddPopup>
     <SidePopup></SidePopup>
   </>;
 }

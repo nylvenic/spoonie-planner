@@ -12,8 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import CONSTANTS from "../../../models/utils/CONSTANTS";
 import mapType from "../../../models/utils/mapType";
+import addOneDay from "../../../models/utils/addOneDay";
 export default function TodoItem({todo, type}) {
-    const {alterCompleteStatus} = useTodos();
+    const {alterCompleteStatus, create} = useTodos();
     const {modifySpoons} = useSpoonContext();
     const {userData} = useAuth();
     const navigate = useNavigate();
@@ -28,7 +29,20 @@ export default function TodoItem({todo, type}) {
         e.stopPropagation();
 
         if (type == CONSTANTS.TODO_TYPE.INBOX || type == CONSTANTS.TODO_TYPE.TODAY) {
-            await alterCompleteStatus({id:todo.id, newStatus:true});
+            const {success, msg} = await alterCompleteStatus({id:todo.id, newStatus:true});
+            console.log('RES', success,msg);
+            if(success && todo.repeat_task == true) {
+                const todoData = {
+                    text: todo.text,
+                    date: addOneDay(todo.date),
+                    cost: todo.cost,
+                    repeat: !!(todo.repeat_task),
+                    replenish: !!(todo.replenish),
+                    description: todo.description
+                };
+                console.log(todoData);
+                await create(todoData);
+            }
             await modifySpoons({cost:todo.cost, replenish:todo.replenish, maxSpoons: userData.maxSpoons})
         } else if (type == CONSTANTS.TODO_TYPE.DELETED) {
         } else if (type == CONSTANTS.TODO_TYPE.COMPLETED) {
@@ -81,7 +95,7 @@ export default function TodoItem({todo, type}) {
             </div>
             <span className="divider">•</span>
             <p className="date">{dayjs(todo.date * 1000).format('MMM D, YYYY h:mm A')}</p>
-            {todo.repeat ? <FontAwesomeIcon title="Repeats" data-testid="Repeats" icon={faRepeat}></FontAwesomeIcon> : ''}
+            {todo.repeat_task ? <FontAwesomeIcon title="Repeats" data-testid="Repeats" icon={faRepeat}></FontAwesomeIcon> : ''}
         </div>
     </div>
 }
