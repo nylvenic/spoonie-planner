@@ -95,7 +95,11 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
 
     async function deleteAction() {
         await todos.deleteTodo(todo.id);
-        navigate('/deleted');
+        if(type === CONSTANTS.TODO_TYPE.DELETED) {
+            navigate('/deleted');
+        } else if (type === CONSTANTS.TODO_TYPE.COMPLETED) {
+            navigate('/completed');
+        }
     } 
 
     async function handleTrashClick(e) {
@@ -179,7 +183,7 @@ export default function AddTodoFields({ todo, modal = false, mode = CONSTANTS.ED
                 <CustomButton aria-label="Delete Button" fullWidth={false} variant='contained' color="danger" onClick={handleTrashClick}> 
                     <FontAwesomeIcon size="lg" icon={faTrash}></FontAwesomeIcon>
                 </CustomButton> : ''}
-                {(mode === CONSTANTS.EDIT_MODE.DELETE || type === CONSTANTS.TODO_TYPE.COMPLETED) && 
+                {(type === CONSTANTS.TODO_TYPE.DELETED || type === CONSTANTS.TODO_TYPE.COMPLETED) && 
                 <CustomButton onClick={deleteAction} aria-label="Permanently Delete" fullWidth={false} color="danger" variant='contained'>Delete Forever</CustomButton>}
                 <CustomButton fullWidth={false} type="submit" variant='contained' className='create-btn'>
                     {mode === CONSTANTS.EDIT_MODE.CREATE ? 'Create Todo' : 
