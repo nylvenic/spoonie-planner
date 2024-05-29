@@ -12,12 +12,11 @@ import ChangePassword from "./pages/options/ChangePassword.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
-  Link,
 } from "react-router-dom";
 import ChangeAvatar from "./pages/options/ChangeAvatar.jsx";
 import ChangeMaxSpoons from "./pages/options/ChangeMaxSpoons.jsx";
 import BrowserReminder from "./pages/options/BrowserReminder.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",

@@ -92,7 +92,6 @@ export const TodoProvider = ({ children }) => {
     const update = useCallback(async ({ data, id }) => {
         if(userData) {
             const todo = new Todo(data);
-            console.log(data);
             await todoManager.updateTodo({ data: todo, id, userId: userData.userId });
             await fetchTodos();
         }
@@ -175,11 +174,11 @@ export const TodoProvider = ({ children }) => {
                 }
             }
         }
-    }, [alterReminderStatus, userData]);
+    }, [alterReminderStatus, userData, todos]);
 
     useEffect(() => {
         fetchTodos();
-    }, [])
+    }, [userData])
 
     useEffect(() => {
         if(userData) {

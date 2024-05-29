@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
-import viteLogo from '../../public/vite.svg';
+import viteLogo from '/vite.svg';
 
 // Create the context
 const NotificationContext = createContext(null);

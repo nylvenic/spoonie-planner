@@ -1,12 +1,8 @@
-@font-face {
-  font-family: 'Roboto';
-  src: url('./Roboto-Regular.ttf') format('ttf');
-  font-weight: normal;
-  font-style: normal;
-}
-
 body {
   position: relative;
+  font-family: 'Roboto';
+  font-weight: normal;
+  font-style: normal;
   background: var(--bg-color);
   min-height: 100vh;
 }

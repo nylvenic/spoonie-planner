@@ -1,5 +1,5 @@
 export default {
-    backend_url: "http://localhost:3000",
+    backend_url: "http://api.spoonietodo.com",
     msgBoxTimer: 3000,
     redirectTimer: 2000,
     notificationTimer: 30000,
