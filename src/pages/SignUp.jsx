@@ -46,7 +46,7 @@ export default function SignUp() {
         <GapWrapper sizeClass="sm">
             <CustomText>Have an account? <Link to="/login">Login</Link></CustomText>
         </GapWrapper>
-        <Integrations text="Or sign up using:"></Integrations>
+        {/* <Integrations text="Or sign up using:"></Integrations> */}
     </>
 
     return <FormWithMessageBoxWrapper 

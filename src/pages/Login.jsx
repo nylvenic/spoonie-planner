@@ -35,7 +35,7 @@ export default function Login() {
         <GapWrapper sizeClass="sm">
             <CustomText>Don't have an account? <Link to="/sign-up">Sign Up</Link></CustomText>
         </GapWrapper>
-        <Integrations text="Or login using:"></Integrations>
+        {/* <Integrations text="Or login using:"></Integrations> */}
     </>
     return <FormWithMessageBoxWrapper redirectTime={0}
             cb={login}
