@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
-import viteLogo from '/vite.svg';
+import logo from '/spoonie-todo-logo.svg';
 
 // Create the context
 const NotificationContext = createContext(null);
@@ -16,7 +16,7 @@ export const NotificationProvider = ({ children }) => {
 
     const showNotification = useCallback((title, message) => {
         if (isEnabled) {
-            new Notification(title, { body: message, icon: viteLogo });
+            new Notification(title, { body: message, icon: logo });
         }
     }, [isEnabled]);
 
